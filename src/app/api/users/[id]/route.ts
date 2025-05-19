@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
 import db from "@/libs/mysql";
 
-export async function GET(request: Request, { params }: { params: { id: string } }) {
+export async function GET(request: Request, context: { params: { id: string } }) {
     try {
-        const id = await params.id;
+        const id = context.params.id;
         const result = await db.query("SELECT * FROM users WHERE id = ?", [id]);
-        
+
         if ((result as any).length === 0) {
             return NextResponse.json({ error: "User not found" }, { status: 404 });
         }
