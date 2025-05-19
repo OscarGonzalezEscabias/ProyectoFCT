@@ -4,38 +4,71 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 async function Navbar() {
   const session = await getServerSession(authOptions);
-  console.log(session);
 
   return (
-    <nav className="flex justify-between items-center bg-gray-950 text-white px-24 py-6">
-      <h1 className="text-xl font-bold">TusViajes+</h1>
-
-      <ul className="flex gap-x-4 text-lg">
+    <nav className="flex justify-between items-center bg-gray-950 text-white px-24 py-6 shadow-md">
+      <h1 className="text-2xl font-extrabold tracking-wide">TusViajes+</h1>
+      <ul className="flex gap-x-6 text-lg items-center">
         {!session?.user ? (
           <>
             <li>
-              <Link href="/auth/login">Login</Link>
+              <Link
+                href="/auth/login"
+                className="px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors"
+              >
+                Login
+              </Link>
             </li>
             <li>
-              <Link href="/auth/register">Register</Link>
+              <Link
+                href="/auth/register"
+                className="px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors"
+              >
+                Register
+              </Link>
             </li>
           </>
         ) : (
           <>
             <li>
-              <Link href="/home">Home</Link>
+              <Link
+                href="/home"
+                className="px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors"
+              >
+                Home
+              </Link>
             </li>
             <li>
-              <Link href="/home/users">Usuarios</Link>
+              <Link
+                href="/home/users"
+                className="px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors"
+              >
+                Usuarios
+              </Link>
             </li>
             <li>
-              <Link href="/home/hotels">Hoteles</Link>
+              <Link
+                href="/home/hotels"
+                className="px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors"
+              >
+                Hoteles
+              </Link>
             </li>
             <li>
-              <Link href="/home/reservation">Reservas</Link>
+              <Link
+                href="/home/reservation"
+                className="px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors"
+              >
+                Reservas
+              </Link>
             </li>
             <li>
-              <Link href="/api/auth/signout">Logout</Link>
+              <Link
+                href="/api/auth/signout"
+                className="bg-blue-500 px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                Logout
+              </Link>
             </li>
           </>
         )}
@@ -43,6 +76,5 @@ async function Navbar() {
     </nav>
   );
 }
-
 
 export default Navbar;
