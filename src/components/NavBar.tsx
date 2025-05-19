@@ -7,15 +7,12 @@ async function Navbar() {
   console.log(session);
 
   return (
-    <nav className="flex justify-between items-center bg-gray-950 text-white px-24 py-3">
-      <h1 className="text-xl font-bold">NextAuth</h1>
+    <nav className="flex justify-between items-center bg-gray-950 text-white px-24 py-6">
+      <h1 className="text-xl font-bold">TusViajes+</h1>
 
-      <ul className="flex gap-x-2">
+      <ul className="flex gap-x-4 text-lg">
         {!session?.user ? (
           <>
-            <li>
-              <Link href="/">Home</Link>
-            </li>
             <li>
               <Link href="/auth/login">Login</Link>
             </li>
@@ -32,6 +29,12 @@ async function Navbar() {
               <Link href="/home/users">Usuarios</Link>
             </li>
             <li>
+              <Link href="/home/hotels">Hoteles</Link>
+            </li>
+            <li>
+              <Link href="/home/reservation">Reservas</Link>
+            </li>
+            <li>
               <Link href="/api/auth/signout">Logout</Link>
             </li>
           </>
@@ -40,5 +43,6 @@ async function Navbar() {
     </nav>
   );
 }
+
 
 export default Navbar;

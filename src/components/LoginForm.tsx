@@ -27,7 +27,7 @@ function LoginForm() {
             alert("Invalid credentials")
         } else {
             form.current?.reset()
-            router.push("/home/users")
+            router.push("/home")
         }
 
     })
