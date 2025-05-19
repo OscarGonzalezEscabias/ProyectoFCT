@@ -1,13 +1,13 @@
 import { NextResponse } from "next/server";
 import db from "@/libs/mysql";
 
-export async function PUT(request, { params }) {
+export async function PUT(request: Request, { params }: { params: { id: string } }) {
     try {
         const { id } = params;
         const { username, email, userpassword } = await request.json();
         const result = await db.query("UPDATE users SET username = ?, email = ?, userpassword = ? WHERE id = ?", [username, email, userpassword, id]);
         
-        if (result.affectedRows === 0) {
+        if ((result as any).affectedRows === 0) {
             return NextResponse.json({ error: "User not found" }, { status: 404 });
         }
 
