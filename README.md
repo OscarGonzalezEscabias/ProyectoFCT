@@ -83,3 +83,5 @@ Aunque no forman parte directa de las funciones visibles, también tenemos en cu
 
 - **Desempeño**:
   - Al estar hecho en Next.js, todo está optimizado para que la aplicación cargue rápido y tenga buen rendimiento.
+
+
