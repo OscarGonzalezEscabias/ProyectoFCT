@@ -3,7 +3,7 @@ import db from "@/libs/mysql";
 
 export async function GET(request: Request, context: { params: { id: string } }) {
     try {
-        const id = context.params.id;
+        const id = await context.params.id;
         const result = await db.query("SELECT * FROM users WHERE id = ?", [id]);
 
         if ((result as any).length === 0) {

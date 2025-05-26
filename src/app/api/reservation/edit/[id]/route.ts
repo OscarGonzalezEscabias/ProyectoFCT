@@ -3,7 +3,7 @@ import db from "@/libs/mysql";
 
 export async function PUT(request: Request, { params }: { params: { id: string } }) {
     try {
-        const { id } = params;
+        const { id } = await params;
         const { user_id, room_id, check_in, check_out, total_price} = await request.json();
         const result = await db.query("UPDATE reservation SET user_id = ?, room_id = ?, check_in = ?, check_out = ?, total_price = ? WHERE id = ?", [user_id, room_id, check_in, check_out, total_price, id]);
         

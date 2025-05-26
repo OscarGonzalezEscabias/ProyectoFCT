@@ -4,7 +4,7 @@ import db from "@/libs/mysql";
 export async function GET(request: Request, { params }: { params: { id: string } }) {
     try {
         const id = params.id;
-        const result = await db.query("SELECT * FROM reservation WHERE user_id = ?", [id]);
+        const result = await db.query("SELECT * FROM reservation WHERE id = ?", [id]);
         
         if ((result as any).length === 0) {
             return NextResponse.json({ error: "Reservas not found" }, { status: 404 });

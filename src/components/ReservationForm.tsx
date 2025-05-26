@@ -126,9 +126,13 @@ function ReservationForm() {
 
         try {
             if (params.id) {
-                await axios.put(`/api/reservation/${params.id}`, payload);
+                console.log(payload)
+                const response = await axios.put(`/api/reservation/edit/${params.id}`, payload);
+                console.log(response)
             } else {
-                await axios.post("/api/reservation/add", payload);
+                console.log(payload)
+                const response = await axios.post("/api/reservation/add", payload);
+                console.log(response)
             }
             form.current?.reset();
             router.push("/home/reservation");

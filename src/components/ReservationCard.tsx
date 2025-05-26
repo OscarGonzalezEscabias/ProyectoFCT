@@ -54,7 +54,7 @@ function ReservationCard({ reservation }: { reservation: any }) {
 
     return (
         <Link
-            href={`/home/reservation/${reservation.user_id}`}
+            href={`/home/reservation/${reservation.id}`}
             className="bg-white p-4 rounded-lg shadow-lg mb-3 hover:bg-gray-100 margin-2 items-center"
         >
             <h2 className="font-bold text-2xl">{usuario}</h2>
