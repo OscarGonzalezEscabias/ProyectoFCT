@@ -56,6 +56,14 @@ async function Navbar() {
             </li>
             <li>
               <Link
+                href="/home/flights"
+                className="px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors"
+              >
+                Vuelos
+              </Link>
+            </li>
+            <li>
+              <Link
                 href="/home/reservation"
                 className="px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors"
               >
