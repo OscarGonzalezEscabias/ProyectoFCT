@@ -6,7 +6,7 @@ const db = mysql({
         user: "root",
         password: "root",
         database: "proyectofct",
-        port: 3306,
+        port: 3307,
     }
 })
 
