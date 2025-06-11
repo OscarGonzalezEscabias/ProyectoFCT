@@ -1,9 +1,16 @@
-import NextAuth from "next-auth";
+import NextAuth , { type NextAuthOptions }from "next-auth";
 import CredentialsProvider  from "next-auth/providers/credentials";
 import db from "@/libs/mysql";
 import bcrypt from "bcrypt";
 
-export const authOptions = {
+interface CustomUser {
+    id: string;
+    username: string;
+    email: string;
+    role: 'ADMIN' | 'USER';
+}
+
+export const authOptions : NextAuthOptions = {
     providers: [
         CredentialsProvider({
             name: "Credentials",
@@ -27,14 +34,42 @@ export const authOptions = {
                 return {
                     id: userFound[0].id,
                     username: userFound[0].username,
-                    email: userFound[0].email
-                }
+                    email: userFound[0].email,
+                    role: userFound[0].role
+                } as CustomUser;
             }
         })
     ],
     pages: {
         signIn: "/auth/login",
         error: "/auth/login"
+    },
+    session: {
+        strategy: "jwt",
+        maxAge: 24 * 60 * 60,
+    },
+    jwt: {
+        maxAge: 24 * 60 * 60,
+    },
+    callbacks: {
+        async jwt({ token, user }: any) {
+            if (user) {
+                token.id = user.id;
+                token.username = user.username;
+                token.email = user.email;
+                token.role = user.role;
+            }
+            return token;
+        },
+        async session({ session, token }: any) {
+            session.user = {
+                id: token.id,
+                username: token.username,
+                email: token.email,
+                role: token.role
+            };
+            return session;
+        }
     },
     secret: process.env.NEXTAUTH_SECRET,
 }

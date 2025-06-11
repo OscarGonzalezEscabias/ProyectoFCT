@@ -4,6 +4,7 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 async function Navbar() {
   const session = await getServerSession(authOptions);
+  const currentUser = session?.user as { id: number; role: string; name: string };
 
   return (
     <nav className="flex justify-between items-center bg-gray-950 text-white px-24 py-6 shadow-md">
@@ -40,13 +41,12 @@ async function Navbar() {
             </li>
             <li>
               <Link
-                href="/home/users"
+                href="/home/hotels"
                 className="px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors"
               >
-                Usuarios
+                Hoteles
               </Link>
             </li>
-
             <li>
               <Link
                 href="/home/flights"
@@ -55,94 +55,26 @@ async function Navbar() {
                 Vuelos
               </Link>
             </li>
-
-            <li>
-              <Link
-                href="/home/hotels"
-                className="px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors"
-              >
-                Hoteles
-              </Link>
-            </li>
-
-            <li className="relative group">
-              <button
-                className="px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors cursor-pointer"
-                type="button"
-              >
-                Reservas ▾
-              </button>
-              <ul className="absolute hidden group-hover:block bg-gray-800 rounded-md mt-2 py-2 w-40 shadow-lg z-10">
+            {currentUser.role === "ADMIN" && (
+              <>
                 <li>
                   <Link
-                    href="/home/reservation"
-                    className="block px-4 py-2 hover:bg-gray-700"
+                    href="/home/admin/users"
+                    className="px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors"
                   >
-                    Hoteles
+                    Usuarios
                   </Link>
                 </li>
                 <li>
                   <Link
-                    href="/home/reservation_flights"
-                    className="block px-4 py-2 hover:bg-gray-700"
+                    href="/home/admin/reservation"
+                    className="px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors"
                   >
-                    Aviones
+                    Reservas
                   </Link>
                 </li>
-              </ul>
-            </li>
-
-            <li className="relative group">
-              <button
-                className="px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors cursor-pointer"
-                type="button"
-              >
-                Gestión ▾
-              </button>
-              <ul className="absolute hidden group-hover:block bg-gray-800 rounded-md mt-2 py-2 w-40 shadow-lg z-10">
-                <li>
-                  <Link
-                    href="/home/rooms"
-                    className="block px-4 py-2 hover:bg-gray-700"
-                  >
-                    Habitaciones
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/home/airports"
-                    className="block px-4 py-2 hover:bg-gray-700"
-                  >
-                    Aeropuertos
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/home/airlines"
-                    className="block px-4 py-2 hover:bg-gray-700"
-                  >
-                    Aerolineas
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/home/aircrafts"
-                    className="block px-4 py-2 hover:bg-gray-700"
-                  >
-                    Aviones
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/home/flight_seats"
-                    className="block px-4 py-2 hover:bg-gray-700"
-                  >
-                    Asientos
-                  </Link>
-                </li>
-              </ul>
-            </li>
-
+              </>
+            )}
             <li>
               <Link
                 href="/api/auth/signout"

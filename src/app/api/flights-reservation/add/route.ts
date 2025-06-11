@@ -3,10 +3,10 @@ import db from "@/libs/mysql";
 
 export async function POST(request: Request) {
   try {
-    const { user_id, flight_id, seat_id, total_price } = await request.json();
+    const { flight_id, seat_id, total_price, user_id } = await request.json();
     
     // Verificar disponibilidad del asiento
-    const [seat] = await db.query(
+    const seat = await db.query(
       "SELECT is_available FROM flight_seats WHERE id = ?",
       [seat_id]
     ) as any[];
