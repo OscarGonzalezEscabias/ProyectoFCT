@@ -64,6 +64,68 @@ INSERT INTO reservation (user_id, room_id, check_in, check_out, total_price) VAL
 (2, 5, '2025-06-15', '2025-06-18', 540.00), 
 (1, 4, '2025-09-01', '2025-09-04', 390.00); 
 
+CREATE TABLE airports (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    iata_code VARCHAR(3) NOT NULL UNIQUE,
+    name VARCHAR(255) NOT NULL,
+    city VARCHAR(255) NOT NULL,
+    country VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE airlines (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL,
+    iata_code VARCHAR(2) NOT NULL UNIQUE,
+    logo_url VARCHAR(255)
+);
+
+CREATE TABLE aircrafts (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    model VARCHAR(255) NOT NULL,
+    airline_id INT NOT NULL,
+    total_seats INT NOT NULL,
+    FOREIGN KEY (airline_id) REFERENCES airlines(id)
+);
+
+CREATE TABLE flights (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    flight_number VARCHAR(10) NOT NULL,
+    airline_id INT NOT NULL,
+    aircraft_id INT NOT NULL,
+    departure_airport_id INT NOT NULL,
+    arrival_airport_id INT NOT NULL,
+    departure_time DATETIME NOT NULL,
+    arrival_time DATETIME NOT NULL,
+    base_price DECIMAL(10, 2) NOT NULL,
+    available_seats INT NOT NULL,
+    FOREIGN KEY (airline_id) REFERENCES airlines(id),
+    FOREIGN KEY (aircraft_id) REFERENCES aircrafts(id),
+    FOREIGN KEY (departure_airport_id) REFERENCES airports(id),
+    FOREIGN KEY (arrival_airport_id) REFERENCES airports(id)
+);
+
+CREATE TABLE flight_seats (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    flight_id INT NOT NULL,
+    seat_number VARCHAR(10) NOT NULL,
+    class ENUM('economy', 'premium_economy', 'business', 'first') NOT NULL,
+    is_available BOOLEAN DEFAULT TRUE,
+    price_modifier DECIMAL(10, 2) DEFAULT 1.0,
+    FOREIGN KEY (flight_id) REFERENCES flights(id),
+    UNIQUE (flight_id, seat_number)
+);
+
+CREATE TABLE flight_reservations (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    flight_id INT NOT NULL,
+    seat_id INT NOT NULL,
+    reservation_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    total_price DECIMAL(10, 2) NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (flight_id) REFERENCES flights(id),
+    FOREIGN KEY (seat_id) REFERENCES flight_seats(id)
+);
 
 /*
 
