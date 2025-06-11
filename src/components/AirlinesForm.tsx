@@ -56,7 +56,7 @@ function AirlinesForm() {
         await axios.post("/api/airlines/add", airline);
       }
       form.current?.reset();
-      router.push("/home/airlines");
+      router.push("/home/admin/airlines");
     } catch (error) {
       console.error("Error al guardar la aerolínea:", error);
       alert("No se pudo guardar la aerolínea.");

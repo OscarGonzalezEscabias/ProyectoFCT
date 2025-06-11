@@ -1,4 +1,4 @@
-import Buttons from "../app/home/airports/[id]/Buttons";
+import Buttons from "../app/home/admin/airports/[id]/Buttons";
 
 function AirportsCard({ airports }: { airports: any }) {
   return (

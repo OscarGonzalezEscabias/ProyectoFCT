@@ -73,7 +73,7 @@ function FlightSeatsForm() {
         await axios.post("/api/flight_seats/add", flightSeat);
       }
       form.current?.reset();
-      router.push("/home/flight_seats");
+      router.push("/home/admin/flight_seats");
     } catch (error) {
       console.error("Error al guardar el asiento:", error);
       alert("No se pudo guardar el asiento.");

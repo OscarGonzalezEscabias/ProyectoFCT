@@ -1,4 +1,4 @@
-import Buttons from "../app/home/rooms/[id]/Buttons";
+import Buttons from "../app/home/admin/rooms/[id]/Buttons";
 
 function RoomsCard({ rooms }: { rooms: any }) {
   return (

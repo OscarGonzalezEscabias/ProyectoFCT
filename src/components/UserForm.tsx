@@ -41,7 +41,7 @@ function UserForm() {
             form.current?.reset()
         }
 
-        router.push("/home/users")
+        router.push("/home/admin/users")
     }
 
     useEffect(() => {

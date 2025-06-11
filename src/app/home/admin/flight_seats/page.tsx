@@ -15,7 +15,7 @@ async function Flight_seatsPage() {
     <div className="flex flex-col gap-4">
       <div className="flex justify-between items-center">
         <h1 className="text-white text-3xl">Asientos</h1>
-        <Link href="/home/flight_seats/add">
+        <Link href="/home/admin/flight_seats/add">
           <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
             Crear asiento
           </button>

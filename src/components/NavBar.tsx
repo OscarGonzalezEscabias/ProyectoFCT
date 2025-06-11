@@ -65,13 +65,82 @@ async function Navbar() {
                     Usuarios
                   </Link>
                 </li>
-                <li>
-                  <Link
-                    href="/home/admin/reservation"
-                    className="px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors"
+                <li className="relative group">
+                  <button
+                    className="px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors cursor-pointer"
+                    type="button"
                   >
-                    Reservas
-                  </Link>
+                    Reservas ▾
+                  </button>
+                  <ul className="absolute hidden group-hover:block bg-gray-800 rounded-md mt-2 py-2 w-40 shadow-lg z-10">
+                    <li>
+                      <Link
+                        href="/home/admin/reservation"
+                        className="block px-4 py-2 hover:bg-gray-700"
+                      >
+                        Hoteles
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        href="/home/admin/flights-reservation"
+                        className="block px-4 py-2 hover:bg-gray-700"
+                      >
+                        Aviones
+                      </Link>
+                    </li>
+                  </ul>
+                </li>
+
+                <li className="relative group">
+                  <button
+                    className="px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors cursor-pointer"
+                    type="button"
+                  >
+                    Gestión ▾
+                  </button>
+                  <ul className="absolute hidden group-hover:block bg-gray-800 rounded-md mt-2 py-2 w-40 shadow-lg z-10">
+                    <li>
+                      <Link
+                        href="/home/admin/rooms"
+                        className="block px-4 py-2 hover:bg-gray-700"
+                      >
+                        Habitaciones
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        href="/home/admin/airports"
+                        className="block px-4 py-2 hover:bg-gray-700"
+                      >
+                        Aeropuertos
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        href="/home/admin/airlines"
+                        className="block px-4 py-2 hover:bg-gray-700"
+                      >
+                        Aerolineas
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        href="/home/admin/aircrafts"
+                        className="block px-4 py-2 hover:bg-gray-700"
+                      >
+                        Aviones
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        href="/home/admin/flight_seats"
+                        className="block px-4 py-2 hover:bg-gray-700"
+                      >
+                        Asientos
+                      </Link>
+                    </li>
+                  </ul>
                 </li>
               </>
             )}

@@ -1,4 +1,4 @@
-import Buttons from "../app/home/aircrafts/[id]/Buttons";
+import Buttons from "../app/home/admin/aircrafts/[id]/Buttons";
 
 function AircraftsCard({ aircrafts }: { aircrafts: any }) {
   return (

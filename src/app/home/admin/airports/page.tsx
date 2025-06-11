@@ -15,7 +15,7 @@ async function AirportsPage() {
     <div className="flex flex-col gap-4">
       <div className="flex justify-between items-center">
         <h1 className="text-white text-3xl">Aeropuertos</h1>
-        <Link href="/home/airports/add">
+        <Link href="/home/admin/airports/add">
           <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
             Crear aeropuerto
           </button>

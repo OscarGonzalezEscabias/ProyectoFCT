@@ -64,7 +64,7 @@ function AirportForm() {
       }
 
       form.current?.reset();
-      router.push("/home/airports");
+      router.push("/home/admin/airports");
     } catch (error) {
       console.error("Error al guardar el aeropuerto:", error);
       alert("No se pudo guardar el aeropuerto.");

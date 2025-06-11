@@ -1,4 +1,4 @@
-import Buttons from "../app/home/flight_seats/[id]/Buttons";
+import Buttons from "../app/home/admin/flight_seats/[id]/Buttons";
 
 function FlightSeatsCard({ flight_seatss }: { flight_seatss: any }) {
   return (

@@ -58,7 +58,7 @@ function AircraftForm() {
         await axios.post("/api/aircrafts/add", aircraft);
       }
       form.current?.reset();
-      router.push("/home/aircrafts");
+      router.push("/home/admin/aircrafts");
     } catch (error) {
       console.error("Error al guardar el avión:", error);
       alert("No se pudo guardar el avión.");

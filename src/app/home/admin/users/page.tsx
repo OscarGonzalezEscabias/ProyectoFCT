@@ -15,7 +15,7 @@ async function UsersPage() {
     <div className="flex flex-col gap-4">
       <div className="flex justify-between items-center">
         <h1 className="text-white text-3xl">Usuarios</h1>
-        <Link href="/home/users/add">
+        <Link href="/home/admin/users/add">
           <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
             Crear usuario
           </button>

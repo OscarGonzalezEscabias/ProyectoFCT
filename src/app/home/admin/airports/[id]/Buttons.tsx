@@ -10,7 +10,7 @@ function Button({ id }: { id: string }) {
     <div className="flex gap-2">
       <button
         className="bg-yellow-500 text-white p-2 rounded-lg cursor-pointer"
-        onClick={() => router.push(`/home/flight_seats/edit/${id}`)}
+        onClick={() => router.push(`/home/admin/airports/edit/${id}`)}
       >
         Editar
       </button>
@@ -18,14 +18,14 @@ function Button({ id }: { id: string }) {
       <button
         className="bg-red-500 text-white p-2 rounded-lg cursor-pointer"
         onClick={async () => {
-          if (confirm("¿Estás seguro de que quieres eliminar este asiento?")) {
+          if (confirm("¿Estás seguro de que quieres eliminar este aeropuerto?")) {
             try {
-              const response = await axios.delete(`/api/flight_seats/del/${id}`);
+              const response = await axios.delete(`/api/airports/del/${id}`);
               console.log(response);
-              router.push("/home/flight_seats");
+              router.push("/home/admin/airports");
             } catch (error) {
-              console.error("Error eliminando flight_seats:", error);
-              alert("No se pudo eliminar el flight_seats.");
+              console.error("Error eliminando airport:", error);
+              alert("No se pudo eliminar el aeropuesto.");
             }
           }
         }}

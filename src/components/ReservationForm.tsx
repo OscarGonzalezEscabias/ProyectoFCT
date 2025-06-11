@@ -135,7 +135,7 @@ function ReservationForm() {
                 console.log(response)
             }
             form.current?.reset();
-            router.push("/home/reservation");
+            router.push("/home/admin/reservation");
         } catch (error) {
             alert("Error al guardar la reserva");
             console.error(error);

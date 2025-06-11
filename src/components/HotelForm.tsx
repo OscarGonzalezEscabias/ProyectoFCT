@@ -36,7 +36,7 @@ function HotelForm() {
             const response = await axios.post("/api/hotels/add", hotel);
             console.log("Hotel creado:", response.data);
             form.current?.reset();
-            router.push("/home/hotels");
+            router.push("/home/admin/hotels");
         } catch (error) {
             console.error("Error al crear el hotel:", error);
             alert("No se pudo crear el hotel.");

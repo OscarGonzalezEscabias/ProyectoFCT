@@ -15,7 +15,7 @@ async function AircraftPage() {
     <div className="flex flex-col gap-4">
       <div className="flex justify-between items-center">
         <h1 className="text-white text-3xl">Aviones</h1>
-        <Link href="/home/aircrafts/add">
+        <Link href="/home/admin/aircrafts/add">
           <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
             Crear avion
           </button>

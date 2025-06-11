@@ -70,7 +70,7 @@ function RoomForm() {
       }
 
       form.current?.reset();
-      router.push("/home/rooms");
+      router.push("/home/admin/rooms");
     } catch (error) {
       console.error("Error al guardar la habitación:", error);
       alert("No se pudo guardar la habitación.");
