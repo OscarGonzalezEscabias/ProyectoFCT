@@ -9,7 +9,7 @@ export default function BookFlightPage() {
   const handleSubmit = async (reservationData: any) => {
     try {
       console.log(reservationData)
-      const response = await fetch("/api/flights-reservation/add", {
+      const response = await fetch("/api/flight-reservation/add", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -19,7 +19,6 @@ export default function BookFlightPage() {
 
       if (!response.ok) throw new Error("Error al crear reserva");
 
-      alert("Reserva creada exitosamente!");
       router.push(`/home/flights/${params.id}`);
     } catch (error) {
       alert("Error al crear la reserva");

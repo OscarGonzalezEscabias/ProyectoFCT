@@ -83,7 +83,7 @@ async function Navbar() {
                     </li>
                     <li>
                       <Link
-                        href="/home/admin/flights-reservation"
+                        href="/home/admin/flight-reservation"
                         className="block px-4 py-2 hover:bg-gray-700"
                       >
                         Aviones
