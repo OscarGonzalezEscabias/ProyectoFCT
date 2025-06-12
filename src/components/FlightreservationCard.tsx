@@ -78,9 +78,11 @@ function FlightReservationCard({ reservation }: { reservation: any }) {
       <p className="text-gray-500">
         <span className="font-bold text-black">Fecha de reserva:</span> {fechaReserva}
       </p>
-      <p className="text-gray-500">
-        <span className="font-bold text-black">Precio total:</span> {reservation.total_price} €
-      </p>
+      <div className="mt-2">
+        <span className="text-lg font-semibold text-blue-600">
+          Precio total: {Number(reservation.total_price).toFixed(2)} €
+        </span>
+      </div>
     </Link>
   );
 }

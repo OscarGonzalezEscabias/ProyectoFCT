@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { useRouter, useParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 interface User {
   id: number;
@@ -39,6 +40,9 @@ function ActivityReservationForm() {
   const router = useRouter();
   const params = useParams();
   const form = useRef<HTMLFormElement>(null);
+
+  const { data: session, status } = useSession();
+  const currentUser = session?.user as { id: number; role: string; name: string } | undefined;
 
   useEffect(() => {
     async function fetchData() {
@@ -119,15 +123,35 @@ function ActivityReservationForm() {
     });
   };
 
+  const selectedActivity = activities.find(
+    (a) => a.id === Number(reservation.activity_id)
+  );
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    if (!currentUser) {
+      alert("No se pudo identificar al usuario actual");
+      return;
+    }
+
+    // Si no es admin, forzamos que el user_id sea el del usuario logueado
     const payload = {
       ...reservation,
-      user_id: Number(reservation.user_id),
+      user_id: currentUser.role === "ADMIN" ? Number(reservation.user_id) : currentUser.id,
       activity_id: Number(reservation.activity_id),
       total_price: Number(reservation.total_price),
+      final_date:
+        selectedActivity?.types === "RENTING" && reservation.final_date
+          ? reservation.final_date
+          : null,
     };
+
+    // Validación básica
+    if (!payload.user_id || !payload.activity_id || !reservation.initial_date) {
+      alert("Por favor, completa todos los campos requeridos.");
+      return;
+    }
 
     try {
       if (params.id) {
@@ -143,33 +167,35 @@ function ActivityReservationForm() {
     }
   };
 
-  const selectedActivity = activities.find(
-    (a) => a.id === Number(reservation.activity_id)
-  );
-
   return (
     <form
       onSubmit={handleSubmit}
       ref={form}
       className="flex flex-col gap-4 bg-white p-6 rounded-lg w-96"
     >
-      <label htmlFor="user_id" className="text-gray-700 font-bold">
-        Usuario
-      </label>
-      <select
-        name="user_id"
-        value={reservation.user_id}
-        onChange={handleChange}
-        className="border border-gray-300 rounded-lg p-2"
-        required
-      >
-        <option value="">Selecciona un usuario</option>
-        {users.map((user) => (
-          <option key={user.id} value={user.id}>
-            {user.username}
-          </option>
-        ))}
-      </select>
+      {/* Si es admin, mostramos el selector de usuarios, si no, no */}
+      {currentUser?.role === "ADMIN" && (
+        <label htmlFor="user_id" className="text-gray-700 font-bold">
+          Usuario
+        </label>
+      )}
+      {currentUser?.role === "ADMIN" && (
+        <select
+          name="user_id"
+          value={reservation.user_id}
+          onChange={handleChange}
+          className="border border-gray-300 rounded-lg p-2"
+          required
+        >
+          <option value="">Selecciona un usuario</option>
+          {users.map((user) => (
+            <option key={user.id} value={user.id}>
+              {user.username}
+            </option>
+          ))}
+        </select>
+      )}
+
 
       <label htmlFor="activity_id" className="text-gray-700 font-bold">
         Actividad

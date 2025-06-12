@@ -122,7 +122,7 @@ CREATE TABLE activity_reservations (
     activity_id INT NOT NULL,
     total_price DECIMAL(10, 2) NOT NULL,
     initial_date DATE NOT NULL,
-    final_date DATE,
+    final_date DATE DEFAULT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (activity_id) REFERENCES activities(id)
 );
