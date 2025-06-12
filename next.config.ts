@@ -9,10 +9,7 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
     ];
-  },
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
+  }
 };
 
 export default nextConfig;

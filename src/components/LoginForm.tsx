@@ -12,8 +12,6 @@ function LoginForm() {
 
     const onSubmit = handleSubmit(async (data: any) => {
 
-        console.log(data)
-
         const response = await signIn("credentials", {
             email: data.email,
             userpassword: data.userpassword,
