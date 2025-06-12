@@ -183,7 +183,11 @@ function ActivityReservationForm() {
       if(from === "profile"){
         router.push(`/home/profile/${params.id}/my-reservations`)
       }else{
-        router.push("/home/admin/activities-reservation");
+        if (currentUser?.role === "ADMIN") {
+          router.push("/home/admin/activities-reservation");
+        } else {
+          router.push("/home/activities");
+        }
       }
     } catch (error) {
       alert("Error al guardar la reserva de actividad");
