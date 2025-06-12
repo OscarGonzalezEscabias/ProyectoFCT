@@ -3,8 +3,9 @@
 import { useEffect, useState } from 'react';
 import ProfileHotelsReservationCard from '@/components/ProfileHotelsReservationCard';
 import ProfileFlightsReservationCard from '@/components/ProfileFlightsReservationCard';
+import ProfileActivitiesReservationCard from '@/components/ProfileActivitiesReservationCard';
 
-type ReservationType = 'all' | 'hotels' | 'flights';
+type ReservationType = 'all' | 'hotels' | 'flights' | 'activities';
 
 export default function MyReservationsPage({ params }: { params: { id: number } }) {
   const [reservationType, setReservationType] = useState<ReservationType>('all');
@@ -29,6 +30,14 @@ export default function MyReservationsPage({ params }: { params: { id: number } 
         if (res.ok) {
           const data = await res.json();
           allData = [...allData, ...data.map((item: any) => ({ ...item, type: 'flight' }))];
+        }
+      }
+
+      if (type === 'all' || type === 'activities') {
+        const res = await fetch(`/api/profile/${params.id}/activities-reservation`);
+        if (res.ok) {
+          const data = await res.json();
+          allData = [...allData, ...data.map((item: any) => ({ ...item, type: 'activity' }))];
         }
       }
 
@@ -73,6 +82,8 @@ export default function MyReservationsPage({ params }: { params: { id: number } 
                 return <ProfileHotelsReservationCard key={index} reservation={reservation} />;
               case 'flight':
                 return <ProfileFlightsReservationCard key={index} reservation={reservation} />;
+              case 'activity':
+                return <ProfileActivitiesReservationCard key={index} reservation={reservation} />;
               default:
                 return null;
             }
