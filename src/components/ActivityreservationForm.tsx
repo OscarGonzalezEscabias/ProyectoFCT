@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
-import { useRouter, useParams } from "next/navigation";
+import { useRouter, useParams, useSearchParams } from "next/navigation";
 
 interface User {
   id: number;
@@ -39,6 +39,8 @@ function ActivityReservationForm() {
   const router = useRouter();
   const params = useParams();
   const form = useRef<HTMLFormElement>(null);
+  const searchParams = useSearchParams();
+  const from = searchParams.get('from');
 
   useEffect(() => {
     async function fetchData() {
@@ -58,11 +60,12 @@ function ActivityReservationForm() {
 
   useEffect(() => {
     if (params.id) {
-      axios
-        .get(`/api/activities-reservation/${params.id}`)
-        .then((res) => {
-          const data = res.data;
-          setReservation({
+      if (from === "profile") {
+        axios
+          .get(`/api/activities-reservation/${params.activityId}`)
+          .then((res) => {
+            const data = res.data;
+            setReservation({
             user_id: data.user_id,
             activity_id: data.activity_id,
             initial_date: data.initial_date,
@@ -73,6 +76,23 @@ function ActivityReservationForm() {
         .catch(() => {
           alert("Error al cargar la reserva de actividad");
         });
+      } else {
+        axios
+          .get(`/api/activities-reservation/${params.id}`)
+          .then((res) => {
+            const data = res.data;
+            setReservation({
+            user_id: data.user_id,
+            activity_id: data.activity_id,
+            initial_date: data.initial_date,
+            final_date: data.final_date || "",
+            total_price: Number(data.total_price),
+          });
+        })
+        .catch(() => {
+          alert("Error al cargar la reserva de actividad");
+        });
+      }
     }
   }, [params.id]);
 
@@ -136,7 +156,11 @@ function ActivityReservationForm() {
         await axios.post("/api/activities-reservation/add", payload);
       }
       form.current?.reset();
-      router.push("/home/admin/activities-reservation");
+      if(from === "profile"){
+        router.push(`/home/profile/${params.id}/my-reservations`)
+      }else{
+        router.push("/home/admin/activities-reservation");
+      }
     } catch (error) {
       alert("Error al guardar la reserva de actividad");
       console.error(error);
