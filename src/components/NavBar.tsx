@@ -102,6 +102,14 @@ export default function Navbar() {
                         Aviones
                       </Link>
                     </li>
+                    <li>
+                      <Link
+                        href="/home/admin/activities-reservation"
+                        className="block px-4 py-2 hover:bg-gray-700"
+                      >
+                        Actividades
+                      </Link>
+                    </li>
                   </ul>
                 </li>
 

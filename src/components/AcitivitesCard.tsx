@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Buttons from "../app/home/activities/[id]/Buttons";
 
-function ActivitiesCard({ activities }: { activities: any }) {
+function AcitivitesCard({ activities }: { activities: any }) {
     return (
         <div className="bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden">
             {activities.image && (
@@ -48,7 +48,7 @@ function ActivitiesCard({ activities }: { activities: any }) {
                 </div>
 
                 <div className="mt-4 pt-4 border-t border-gray-200 flex justify-between items-center">
-                    <Link href={`/home/admin/reservation/add`}>
+                    <Link href={`/home/activities/book`}>
                         <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition">
                             Reservar
                         </button>
@@ -61,4 +61,4 @@ function ActivitiesCard({ activities }: { activities: any }) {
     );
 }
 
-export default ActivitiesCard;
+export default AcitivitesCard;
