@@ -1,22 +1,31 @@
 "use client"
 import React, { useRef, useState, useEffect } from 'react'
 import axios from 'axios'
-import { useRouter, useParams } from 'next/navigation'
+import { useRouter, useParams, useSearchParams } from 'next/navigation'
+import { useSession } from 'next-auth/react'
 
 function UserForm() {
+
+    const searchParams = useSearchParams();
+    const from = searchParams.get('from'); 
+
+
     const [user, setUser] = useState({
         username: "",
         email: "",
         userpassword: "",
-        confirmPassword: ""
+        confirmPassword: "",
+        role: "USER" 
     })
 
     const router = useRouter()
     const params = useParams()
+    const { data: session, status } = useSession();
+    const currentUser = session?.user as { id: number; role: string; name: string };
 
     const form = useRef<HTMLFormElement>(null)
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
         setUser({
             ...user,
             [e.target.name]: e.target.value
@@ -41,7 +50,11 @@ function UserForm() {
             form.current?.reset()
         }
 
-        router.push("/home/admin/users")
+        if(from === "profile"){
+            router.push(`/home/profile/${params.id}`)
+        }else{
+            router.push("/home/admin/users")
+        }
     }
 
     useEffect(() => {
@@ -66,6 +79,16 @@ function UserForm() {
 
             <label htmlFor="confirmPassword" className='text-gray-700'>Confirm Password</label>
             <input type="password" name="confirmPassword" id="confirmPassword" onChange={handleChange} className='border border-gray-300 rounded-lg p-2' />
+
+            {currentUser?.role === "ADMIN" && (
+                <div>
+                    <label htmlFor="role" className='text-gray-700'>Role</label>
+                    <select name="role" onChange={handleChange} value={user.role} className='border border-gray-300 rounded-lg p-2'>
+                        <option value="USER">USER</option>
+                        <option value="ADMIN">ADMIN</option>
+                    </select>
+                </div>
+            )}
 
             <button type="submit" className='bg-blue-500 text-white p-2 rounded-lg cursor-pointer'>{params.id ? "Editar" : "Añadir"}</button>
         </form>
