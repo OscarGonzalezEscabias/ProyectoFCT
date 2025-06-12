@@ -55,6 +55,14 @@ async function Navbar() {
                 Vuelos
               </Link>
             </li>
+            <li>
+              <Link
+                href="/home/activities"
+                className="px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors"
+              >
+                Actividades
+              </Link>
+            </li>
             {currentUser.role === "ADMIN" && (
               <>
                 <li>

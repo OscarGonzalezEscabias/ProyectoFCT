@@ -29,8 +29,8 @@ function FlightReservationCard({ reservation }: { reservation: any }) {
     async function fetchVuelo() {
       try {
         const res = await axios.get(`http://localhost:3000/api/flights/${reservation.flight_id}`);
-        if (res.data?.code) {
-          setVuelo(`Vuelo ${res.data.code}`);
+        if (res.data?.flight_number) {
+          setVuelo(`${res.data.flight_number}`);
         } else {
           setVuelo("Vuelo no encontrado");
         }

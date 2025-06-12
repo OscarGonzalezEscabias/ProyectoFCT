@@ -1,5 +1,10 @@
+CREATE DATABASE IF NOT EXISTS proyectofct
+  CHARACTER SET utf8mb4
+  COLLATE utf8mb4_unicode_ci;
 
 USE proyectofct;
+
+SET NAMES utf8mb4;
 
 CREATE TABLE users (
     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -101,6 +106,27 @@ CREATE TABLE flight_reservations (
     FOREIGN KEY (seat_id) REFERENCES flight_seats(id)
 );
 
+CREATE TABLE activities (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    types ENUM('RENTING', 'RESERVATION') NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    image VARCHAR(255),
+    price DECIMAL(10, 2) NOT NULL,
+    available BOOLEAN NOT NULL
+);
+
+CREATE TABLE activity_reservations (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    activity_id INT NOT NULL,
+    total_price DECIMAL(10, 2) NOT NULL,
+    initial_date DATE NOT NULL,
+    final_date DATE,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (activity_id) REFERENCES activities(id)
+);
+
 INSERT INTO users (username, email, userpassword, role) VALUES
 ('Juan Pérez', 'juan@example.com', '1234', 'USER'),
 ('Ana Torres', 'ana@example.com', '1234', 'USER'),
@@ -168,6 +194,21 @@ INSERT INTO flight_seats (flight_id, seat_number, class, is_available, price_mod
 (4, '10F', 'economy', TRUE, 1.0),
 (4, '1C', 'first', TRUE, 4.0),
 (5, '20A', 'economy', TRUE, 1.0);
+
+INSERT INTO activities (types, name, description, image, price, available) VALUES
+('RENTING', 'Alquiler de bicicleta de montaña', 'Recorre rutas naturales con nuestras bicicletas de alta gama.', 'bike_mountain.jpg', 15.00, TRUE),
+('RESERVATION', 'Tour en barco al atardecer', 'Disfruta de un paseo en barco mientras cae el sol.', 'sunset_boat.jpg', 60.00, TRUE),
+('RESERVATION', 'Clases de cocina mediterránea', 'Aprende a cocinar platos típicos con chefs locales.', 'cooking_class.jpg', 45.00, TRUE),
+('RENTING', 'Alquiler de kayak individual', 'Explora el río a tu ritmo con nuestros kayaks.', 'kayak.jpg', 20.00, FALSE),
+('RESERVATION', 'Excursión a la montaña', 'Una caminata guiada por senderos naturales.', 'mountain_hike.jpg', 30.00, TRUE);
+
+INSERT INTO activity_reservations (user_id, activity_id, total_price, initial_date, final_date) VALUES
+(1, 1, 45.00, '2025-06-20', '2025-06-22'),  -- 3 días de bicicleta
+(2, 2, 60.00, '2025-07-01', '2025-07-01'),  -- Tour en barco
+(1, 3, 45.00, '2025-06-25', '2025-06-25'),  -- Clases de cocina
+(3, 5, 30.00, '2025-07-10', '2025-07-10'),  -- Excursión montaña
+(2, 4, 40.00, '2025-06-28', '2025-06-29');  -- Kayak 2 días
+
 
 /*
 

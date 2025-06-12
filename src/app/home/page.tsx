@@ -14,7 +14,7 @@ export function Home() {
         <p className="text-xl mb-6 leading-relaxed text-gray-200">
           Somos tu agencia de confianza para organizar el viaje completo de tus sueños.
           <br className="hidden md:block" />
-          Desde vuelos hasta hoteles y restaurantes, lo gestionamos todo para que tú solo te preocupes por disfrutar.
+          Desde vuelos hasta hoteles y actividades, lo gestionamos todo para que tú solo te preocupes por disfrutar.
         </p>
         <p className="text-lg italic text-indigo-300 mb-8">
           ✈️ Reserva fácil, viaja sin límites. <span className="text-blue-400">🌍</span>
