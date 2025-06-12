@@ -101,6 +101,27 @@ CREATE TABLE flight_reservations (
     FOREIGN KEY (seat_id) REFERENCES flight_seats(id)
 );
 
+CREATE TABLE activities (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    types ENUM('RENTING', 'RESERVATION') NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    image VARCHAR(255),
+    price DECIMAL(10, 2) NOT NULL,
+    available BOOLEAN NOT NULL
+);
+
+CREATE TABLE activity_reservations (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    activity_id INT NOT NULL,
+    total_price DECIMAL(10, 2) NOT NULL,
+    initial_date DATE NOT NULL,
+    final_date DATE,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (activity_id) REFERENCES activities(id)
+);
+
 INSERT INTO users (username, email, userpassword, role) VALUES
 ('Juan Pérez', 'juan@example.com', '1234', 'USER'),
 ('Ana Torres', 'ana@example.com', '1234', 'USER'),

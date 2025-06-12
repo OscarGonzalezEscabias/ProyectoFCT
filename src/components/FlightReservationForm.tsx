@@ -11,7 +11,7 @@ interface User {
 
 interface Flight {
   id: number;
-  code: string;
+  flight_number: string;
 }
 
 interface Seat {
@@ -168,7 +168,7 @@ function FlightReservationForm() {
         <option value="">Selecciona un vuelo</option>
         {flights.map((flight) => (
           <option key={flight.id} value={flight.id}>
-            {flight.code}
+            {flight.flight_number}
           </option>
         ))}
       </select>

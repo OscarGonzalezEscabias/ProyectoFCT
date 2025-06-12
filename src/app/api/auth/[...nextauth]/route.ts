@@ -5,7 +5,7 @@ import bcrypt from "bcrypt";
 
 interface CustomUser {
     id: string;
-    username: string;
+    name: string;
     email: string;
     role: 'ADMIN' | 'USER';
 }
@@ -31,9 +31,11 @@ export const authOptions : NextAuthOptions = {
                     throw new Error("Invalid password")
                 }
 
+
+                console.log(userFound[0]);
                 return {
                     id: userFound[0].id,
-                    username: userFound[0].username,
+                    name: userFound[0].username,
                     email: userFound[0].email,
                     role: userFound[0].role
                 } as CustomUser;
@@ -55,7 +57,7 @@ export const authOptions : NextAuthOptions = {
         async jwt({ token, user }: any) {
             if (user) {
                 token.id = user.id;
-                token.username = user.username;
+                token.name = user.name;
                 token.email = user.email;
                 token.role = user.role;
             }
@@ -64,7 +66,7 @@ export const authOptions : NextAuthOptions = {
         async session({ session, token }: any) {
             session.user = {
                 id: token.id,
-                username: token.username,
+                name: token.name,
                 email: token.email,
                 role: token.role
             };
