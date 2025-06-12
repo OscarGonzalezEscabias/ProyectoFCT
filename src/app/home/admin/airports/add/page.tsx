@@ -1,4 +1,4 @@
-import AirportForm from "@/components/AirportForm"
+import AirportForm from "@/components/forms/AirportForm"
 
 function AddPage() {
     

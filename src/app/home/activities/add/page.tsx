@@ -1,4 +1,4 @@
-import ActivitiesForm from "@/components/ActivitiesForm";
+import ActivitiesForm from "@/components/forms/ActivitiesForm";
 
 function AddPage() {
     

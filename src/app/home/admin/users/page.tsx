@@ -1,5 +1,5 @@
 import axios from "axios"
-import UserCard from "@/components/UserCard"
+import UserCard from "@/components/cards/UserCard"
 import Link from "next/link"
 
 async function LoadUsers() {

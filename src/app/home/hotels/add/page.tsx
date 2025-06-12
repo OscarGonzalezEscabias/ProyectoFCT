@@ -1,4 +1,4 @@
-import HotelForm from "@/components/HotelForm"
+import HotelForm from "@/components/forms/HotelForm"
 
 function AddPage() {
     

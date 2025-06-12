@@ -1,6 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
-import FlightForm from "@/components/FlightForm";
+import FlightForm from "@/components/forms/FlightForm";
 
 export default function NewFlightPage() {
   const router = useRouter();

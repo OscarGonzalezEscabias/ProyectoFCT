@@ -1,5 +1,5 @@
 import axios from "axios"
-import ReservationCard from "@/components/ReservationCard"
+import ReservationCard from "@/components/cards/ReservationCard"
 
 async function LoadReservation() {
     const { data } = await axios.get("http://localhost:3000/api/reservation");

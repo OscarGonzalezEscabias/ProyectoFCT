@@ -1,5 +1,5 @@
 import axios from "axios"
-import ProfileFlightsReservationCard from "@/components/ProfileFlightsReservationCard"
+import ProfileFlightsReservationCard from "@/components/cards/ProfileFlightsReservationCard"
 import Buttons from "./Buttons"
 
 async function LoadFlightReservation(flightId: string) {

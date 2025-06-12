@@ -1,4 +1,4 @@
-import Flight_seatsForm from "@/components/Flight_seatsForm"
+import Flight_seatsForm from "@/components/forms/Flight_seatsForm"
 
 function AddPage() {
     

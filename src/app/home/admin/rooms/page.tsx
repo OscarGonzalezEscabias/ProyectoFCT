@@ -1,5 +1,5 @@
 import axios from "axios";
-import RoomsCard from "@/components/RoomsCard";
+import RoomsCard from "@/components/cards/RoomsCard";
 import Link from "next/link";
 
 async function LoadRooms() {

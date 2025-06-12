@@ -1,6 +1,6 @@
 import axios from "axios"
 import Buttons from "./Buttons"
-import FlightreservationCard from "@/components/FlightreservationCard"
+import FlightreservationCard from "@/components/cards/FlightreservationCard"
 
 async function LoadFlightReservation(id: string) {
     const { data } = await axios.get(`http://localhost:3000/api/flight-reservation/${id}`)

@@ -1,5 +1,5 @@
 import axios from "axios";
-import AcitivitesCard from "@/components/AcitivitesCard";
+import AcitivitesCard from "@/components/cards/AcitivitesCard";
 import Link from "next/link";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";

@@ -1,5 +1,5 @@
 import axios from "axios";
-import HotelsCard from "@/components/HotelsCard";
+import HotelsCard from "@/components/cards/HotelsCard";
 import Link from "next/link";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";

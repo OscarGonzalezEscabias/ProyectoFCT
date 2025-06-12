@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Buttons from "../app/home/hotels/[id]/Buttons";
+import Buttons from "../../app/home/hotels/[id]/Buttons";
 
 function HotelsCard({ hotels }: { hotels: any }) {
   return (

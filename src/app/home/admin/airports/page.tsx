@@ -1,5 +1,5 @@
 import axios from "axios";
-import AirportsCard from "@/components/AirportsCard";
+import AirportsCard from "@/components/cards/AirportsCard";
 import Link from "next/link";
 
 async function LoadAirports() {

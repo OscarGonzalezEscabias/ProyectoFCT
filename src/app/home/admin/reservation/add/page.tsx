@@ -1,4 +1,4 @@
-import ReservationForm from "@/components/ReservationForm";
+import ReservationForm from "@/components/forms/ReservationForm";
 
 function AddPage() {
     

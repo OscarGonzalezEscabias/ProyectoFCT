@@ -1,7 +1,7 @@
 "use client";
 import { useRouter, useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import FlightForm from "@/components/FlightForm";
+import FlightForm from "@/components/forms/FlightForm";
 
 export default function EditFlightPage() {
   const router = useRouter();

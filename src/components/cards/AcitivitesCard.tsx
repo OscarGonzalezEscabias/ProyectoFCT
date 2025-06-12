@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Buttons from "../app/home/activities/[id]/Buttons";
+import Buttons from "../../app/home/activities/[id]/Buttons";
 
 function AcitivitesCard({ activities }: { activities: any }) {
     return (

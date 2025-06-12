@@ -1,5 +1,5 @@
 import axios from "axios";
-import AircraftsCard from "@/components/AircraftsCard";
+import AircraftsCard from "@/components/cards/AircraftsCard";
 import Link from "next/link";
 
 async function LoadAircrafts() {

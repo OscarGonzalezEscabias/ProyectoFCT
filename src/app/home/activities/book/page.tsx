@@ -1,6 +1,6 @@
 "use client";
 import { useRouter, useParams } from "next/navigation";
-import ActivityReservationForm from "@/components/ActivityreservationForm";
+import ActivityReservationForm from "@/components/forms/ActivityreservationForm";
 
 export default function BookActivitiesPage() {
   const router = useRouter();

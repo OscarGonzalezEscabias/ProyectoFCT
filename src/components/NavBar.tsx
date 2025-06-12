@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import ProfileCard from "./ProfileCard";
+import ProfileCard from "./cards/ProfileCard";
 
 export default function Navbar() {
   const { data: session, status } = useSession();

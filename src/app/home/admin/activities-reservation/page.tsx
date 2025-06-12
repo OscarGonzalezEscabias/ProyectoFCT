@@ -1,5 +1,5 @@
 import axios from "axios"
-import ActivityreservationCard from "@/components/ActivityreservationCard"
+import ActivityreservationCard from "@/components/cards/ActivityreservationCard"
 
 async function LoadActivityReservation() {
     const { data } = await axios.get("http://localhost:3000/api/activities-reservation");

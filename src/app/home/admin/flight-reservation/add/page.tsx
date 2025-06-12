@@ -1,4 +1,4 @@
-import FlightReservationForm from "@/components/FlightReservationForm";
+import FlightReservationForm from "@/components/forms/FlightReservationForm";
 
 function AddPage() {
     

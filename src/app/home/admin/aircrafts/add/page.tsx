@@ -1,4 +1,4 @@
-import AircraftForm from "@/components/AircraftForm"
+import AircraftForm from "@/components/forms/AircraftForm"
 
 function AddPage() {
     

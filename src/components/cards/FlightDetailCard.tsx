@@ -3,7 +3,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import FlightForm from "./FlightForm";
+import FlightForm from "../forms/FlightForm";
 import { useSession } from "next-auth/react";
 
 function FlightDetailCard({ flight: initialFlight }: { flight: any }) {

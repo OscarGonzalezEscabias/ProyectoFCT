@@ -1,5 +1,5 @@
 import axios from "axios"
-import ProfileHotelsReservationCard from "@/components/ProfileHotelsReservationCard"
+import ProfileHotelsReservationCard from "@/components/cards/ProfileHotelsReservationCard"
 import Buttons from "./Buttons"
 
 async function LoadReservation(hotelId: string) {

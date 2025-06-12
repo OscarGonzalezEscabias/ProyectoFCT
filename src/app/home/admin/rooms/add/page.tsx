@@ -1,4 +1,4 @@
-import RoomForm from "@/components/RoomForm"
+import RoomForm from "@/components/forms/RoomForm"
 
 function AddPage() {
     

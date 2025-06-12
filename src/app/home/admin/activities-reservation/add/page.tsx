@@ -1,4 +1,4 @@
-import ActivityreservationForm from "@/components/ActivityreservationForm";
+import ActivityreservationForm from "@/components/forms/ActivityreservationForm";
 
 function AddPage() {
     

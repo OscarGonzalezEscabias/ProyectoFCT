@@ -1,9 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import ProfileHotelsReservationCard from '@/components/ProfileHotelsReservationCard';
-import ProfileFlightsReservationCard from '@/components/ProfileFlightsReservationCard';
-import ProfileActivitiesReservationCard from '@/components/ProfileActivitiesReservationCard';
+import ProfileHotelsReservationCard from '@/components/cards/ProfileHotelsReservationCard';
+import ProfileFlightsReservationCard from '@/components/cards/ProfileFlightsReservationCard';
+import ProfileActivitiesReservationCard from '@/components/cards/ProfileActivitiesReservationCard';
 
 type ReservationType = 'all' | 'hotels' | 'flights' | 'activities';
 

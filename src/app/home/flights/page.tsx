@@ -1,5 +1,5 @@
 import axios from "axios";
-import FlightCard from "@/components/FlightCard";
+import FlightCard from "@/components/cards/FlightCard";
 import Link from "next/link";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";

@@ -1,5 +1,5 @@
 import axios from "axios"
-import ProfileActivitiesReservationCard from "@/components/ProfileActivitiesReservationCard"
+import ProfileActivitiesReservationCard from "@/components/cards/ProfileActivitiesReservationCard"
 import Buttons from "./Buttons"
 
 async function LoadActivityReservation(activityId: string) {

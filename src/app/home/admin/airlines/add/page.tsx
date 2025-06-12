@@ -1,4 +1,4 @@
-import AirlinesForm from "@/components/AirlinesForm"
+import AirlinesForm from "@/components/forms/AirlinesForm"
 
 function AddPage() {
     

@@ -1,5 +1,5 @@
 import axios from "axios";
-import FlightDetailCard from "@/components/FlightDetailCard";
+import FlightDetailCard from "@/components/cards/FlightDetailCard";
 
 async function LoadFlight(id: string) {
     const { data } = await axios.get(`http://localhost:3000/api/flights/${id}`);
