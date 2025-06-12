@@ -167,7 +167,7 @@ export default function Navbar() {
               <ul className="absolute hidden group-hover:block bg-gray-800 rounded-md mt-2 py-2 w-40 shadow-lg z-10">
                 <li>
                   <Link
-                    href="/home/admin/reservation"
+                    href={`/home/profile/${currentUser.id}`}
                     className="block px-4 py-2 hover:bg-gray-700"
                   >
                     Perfil
@@ -175,7 +175,7 @@ export default function Navbar() {
                 </li>
                 <li>
                   <Link
-                    href="/home/admin/reservation"
+                    href={`/home/profile/${currentUser.id}/my-reservations`}
                     className="block px-4 py-2 hover:bg-gray-700"
                   >
                     Mis reservas

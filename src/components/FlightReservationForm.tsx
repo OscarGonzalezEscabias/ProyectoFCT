@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
-import { useRouter, useParams } from "next/navigation";
+import { useRouter, useParams, useSearchParams } from "next/navigation";
 
 interface User {
   id: number;
@@ -47,6 +47,8 @@ function FlightReservationForm() {
   const router = useRouter();
   const params = useParams();
   const form = useRef<HTMLFormElement>(null);
+  const searchParams = useSearchParams();
+  const from = searchParams.get('from');  
 
   useEffect(() => {
     async function fetchData() {
@@ -68,11 +70,12 @@ function FlightReservationForm() {
 
   useEffect(() => {
     if (params.id) {
-      axios
-        .get(`/api/flight-reservation/${params.id}`)
-        .then((res) => {
-          const data = res.data;
-          setReservation({
+      if (from === "profile") {
+        axios
+          .get(`/api/flight-reservation/${params.flightId}`)
+          .then((res) => {
+            const data = res.data;
+            setReservation({
             user_id: data.user_id,
             flight_id: data.flight_id,
             seat_id: data.seat_id,
@@ -83,6 +86,23 @@ function FlightReservationForm() {
         .catch(() => {
           alert("Error al cargar la reserva de vuelo");
         });
+      } else {
+        axios
+          .get(`/api/flight-reservation/${params.id}`)
+          .then((res) => {
+            const data = res.data;
+            setReservation({
+            user_id: data.user_id,
+            flight_id: data.flight_id,
+            seat_id: data.seat_id,
+            reservation_date: data.reservation_date.slice(0, 16),
+            total_price: Number(data.total_price),
+          });
+        })
+        .catch(() => {
+          alert("Error al cargar la reserva de vuelo");
+        });
+      }
     }
   }, [params.id]);
 
@@ -119,12 +139,25 @@ function FlightReservationForm() {
 
     try {
       if (params.id) {
-        await axios.put(`/api/flight-reservation/edit/${params.id}`, payload);
+        if (from === "profile") {
+            console.log(payload)
+            const response = await axios.put(`/api/flight-reservation/edit/${params.flightId}`, payload);
+            console.log(response)
+        } else {
+            console.log(payload)
+            const response = await axios.put(`/api/flight-reservation/edit/${params.id}`, payload);
+            console.log(response)
+        }
       } else {
         await axios.post("/api/flight-reservation/add", payload);
       }
       form.current?.reset();
-      router.push("/home/admin/flight-reservation");
+      
+      if(from === "profile"){
+        router.push(`/home/profile/${params.id}/my-reservations`)
+      }else{
+        router.push("/home/admin/flight-reservation");
+      }
     } catch (error) {
       alert("Error al guardar la reserva de vuelo");
       console.error(error);

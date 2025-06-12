@@ -25,7 +25,7 @@ function HotelsCard({ hotels }: { hotels: any }) {
         <p className="text-gray-600 text-sm mb-4">{hotels.description}</p>
 
         <div className="mt-4 pt-4 border-t border-gray-200 flex justify-between items-center">
-          <Link href={`/home/admin/reservation/add`}>
+          <Link href={`/home/hotels/add/reservation/${hotels.id}`}>
             <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition">
               Reservar
             </button>
