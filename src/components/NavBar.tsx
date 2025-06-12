@@ -1,17 +1,21 @@
+"use client";
+
 import Link from "next/link";
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { useSession } from "next-auth/react";
 import ProfileCard from "./ProfileCard";
 
-async function Navbar() {
-  const session = await getServerSession(authOptions);
+export default function Navbar() {
+  const { data: session, status } = useSession();
   const currentUser = session?.user as { id: number; role: string; name: string; email: string };
+
+  // status puede ser "loading", "authenticated" o "unauthenticated"
+  // Puedes usar loading para mostrar algo si quieres
 
   return (
     <nav className="flex justify-between items-center bg-gray-950 text-white px-24 py-6 shadow-md">
       <h1 className="text-2xl font-extrabold tracking-wide">TusViajes+</h1>
       <ul className="flex gap-x-6 text-lg items-center relative">
-        {!session?.user ? (
+        {!session ? (
           <>
             <li>
               <Link
@@ -64,7 +68,7 @@ async function Navbar() {
                 Actividades
               </Link>
             </li>
-            {currentUser.role === "ADMIN" && (
+            {currentUser?.role === "ADMIN" && (
               <>
                 <li>
                   <Link
@@ -187,12 +191,9 @@ async function Navbar() {
                 </li>
               </ul>
             </li>
-
           </>
         )}
       </ul>
     </nav>
   );
 }
-
-export default Navbar;
