@@ -9,7 +9,6 @@ async function LoadRooms() {
 
 async function RoomsPage() {
   const data = await LoadRooms();
-  console.log(data);
 
   return (
     <div className="flex flex-col gap-4">
@@ -22,9 +21,11 @@ async function RoomsPage() {
         </Link>
       </div>
 
-      {data.map((room: any) => (
-        <RoomsCard key={room.id} rooms={room} />
-      ))}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        {data.map((room: any) => (
+          <RoomsCard key={room.id} room={room} />
+        ))}
+      </div>
     </div>
   );
 }

@@ -10,7 +10,7 @@ interface Room {
   capacity: number;
   price: number;
   hotel_id: number;
-  image: string;
+  image: string; // nombre archivo
 }
 
 function RoomForm() {
@@ -23,16 +23,26 @@ function RoomForm() {
     image: "",
   });
 
+  const [preview, setPreview] = useState<string>("");
+
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   const router = useRouter();
-  const { id } = useParams(); // Detecta si hay id → editar
+  const { id } = useParams();
   const form = useRef<HTMLFormElement>(null);
 
-  // Si hay id, cargamos datos de la habitación para editar
   useEffect(() => {
     if (id) {
       axios
         .get(`/api/rooms/${id}`)
-        .then((res) => setRoom(res.data))
+        .then((res) => {
+          setRoom(res.data);
+          if (res.data.image) {
+            setPreview(`/images/rooms/${res.data.image}`);
+          }
+        })
         .catch((err) => {
           console.error("Error cargando la habitación:", err);
           alert("No se pudo cargar la habitación.");
@@ -54,19 +64,57 @@ function RoomForm() {
     }));
   };
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] || null;
+    setSelectedFile(file);
+
+    if (file) {
+      const objectUrl = URL.createObjectURL(file);
+      setPreview(objectUrl);
+
+      // liberar URL para evitar memory leak
+      return () => URL.revokeObjectURL(objectUrl);
+    } else {
+      setPreview("");
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!room.name || !room.description || !room.capacity || !room.price || !room.hotel_id) {
+    if (
+      !room.name ||
+      !room.description ||
+      !room.capacity ||
+      !room.price ||
+      !room.hotel_id
+    ) {
       alert("Por favor, completa todos los campos obligatorios.");
       return;
     }
 
     try {
+      const formData = new FormData();
+      formData.append("name", room.name);
+      formData.append("description", room.description);
+      formData.append("capacity", room.capacity.toString());
+      formData.append("price", room.price.toString());
+      formData.append("hotel_id", room.hotel_id.toString());
+
+      if (selectedFile) {
+        formData.append("image", selectedFile);
+      }
+
+      // Para edición enviamos la imagen actual también (en caso de no cambiar)
       if (id) {
-        await axios.put(`/api/rooms/edit/${id}`, room);
+        formData.append("currentImage", room.image);
+        await axios.put(`/api/rooms/edit/${id}`, formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
       } else {
-        await axios.post("/api/rooms/add", room);
+        await axios.post("/api/rooms/add", formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
       }
 
       form.current?.reset();
@@ -152,17 +200,32 @@ function RoomForm() {
       />
 
       <label htmlFor="image" className="text-gray-700 font-bold">
-        Imagen (opcional)
+        Imagen de la habitación
       </label>
+      <button
+        type="button"
+        onClick={() => fileInputRef.current?.click()}
+        className="bg-gray-200 text-gray-800 px-4 py-2 rounded hover:bg-gray-300 w-fit"
+      >
+        Elegir archivo
+      </button>
       <input
-        type="text"
+        type="file"
         name="image"
         id="image"
-        value={room.image}
-        onChange={handleChange}
-        className="border border-gray-300 rounded-lg p-2"
-        placeholder="Nombre de archivo o URL"
+        onChange={handleFileChange}
+        accept="image/*"
+        ref={fileInputRef}
+        className="hidden"
       />
+
+      {preview && (
+        <img
+          src={preview}
+          alt="Preview"
+          className="w-full h-48 object-cover rounded border mt-2"
+        />
+      )}
 
       <button
         type="submit"

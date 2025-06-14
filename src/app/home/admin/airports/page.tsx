@@ -22,9 +22,11 @@ async function AirportsPage() {
         </Link>
       </div>
 
-      {data.map((airport: any) => (
-        <AirportsCard key={airport.id} airports={airport} />
-      ))}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        {data.map((airport: any) => (
+          <AirportsCard key={airport.id} airports={airport} />
+        ))}
+      </div>
     </div>
   );
 }

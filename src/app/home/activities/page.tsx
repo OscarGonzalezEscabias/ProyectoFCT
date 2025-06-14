@@ -1,5 +1,5 @@
 import axios from "axios";
-import AcitivitesCard from "@/components/cards/AcitivitesCard";
+import ActivitiesCard from "@/components/cards/AcitivitesCard";
 import Link from "next/link";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
@@ -13,7 +13,6 @@ async function ActivitiesPage() {
   const session = await getServerSession(authOptions);
   const currentUser = session?.user as { id: number; role: string; name: string };
   const data = await LoadActivities();
-  console.log(data);
 
   return (
     <div className="flex flex-col gap-4">
@@ -28,9 +27,11 @@ async function ActivitiesPage() {
         )}
       </div>
 
-      {data.map((activitie: any) => (
-        <AcitivitesCard key={activitie.id} activities={activitie} />
-      ))}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        {data.map((activity: any) => (
+          <ActivitiesCard key={activity.id} activities={activity} />
+        ))}
+      </div>
     </div>
   );
 }

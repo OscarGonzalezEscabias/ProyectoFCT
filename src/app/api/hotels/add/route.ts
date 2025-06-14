@@ -1,21 +1,30 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import db from "@/libs/mysql";
-import bcrypt from "bcrypt";
+import path from "path";
+import fs from "fs/promises";
+import { v4 as uuidv4 } from "uuid";
 
-export async function POST(request: Request) {
-    try {
-        const { namehotel, description, image } = await request.json();
+export async function POST(req: NextRequest) {
+    const formData = await req.formData();
+    const namehotel = formData.get("namehotel") as string;
+    const description = formData.get("description") as string;
+    const file = formData.get("image") as File;
 
-        const result = await db.query(
-            "INSERT INTO hotel (namehotel, description, image) VALUES (?, ?, ?)",
-            [namehotel, description, image]
-        );
-
-        console.log(result);
-
-        return NextResponse.json({ message: "Hotel created successfully" });
-    } catch (error) {
-        console.error(error);
-        return NextResponse.json({ error: "Failed to create hotel" }, { status: 500 });
+    if (!file || !namehotel || !description) {
+        return NextResponse.json({ error: "Datos incompletos" }, { status: 400 });
     }
+
+    const buffer = Buffer.from(await file.arrayBuffer());
+    const fileName = uuidv4() + path.extname(file.name);
+    const uploadDir = path.join(process.cwd(), "public", "uploads", "hotels");
+
+    await fs.mkdir(uploadDir, { recursive: true });
+    await fs.writeFile(path.join(uploadDir, fileName), buffer);
+
+    const result = await db.query(
+        "INSERT INTO hotel (namehotel, description, image) VALUES (?, ?, ?)",
+        [namehotel, description, fileName]
+    );
+
+    return NextResponse.json({ message: "Hotel creado correctamente", result });
 }

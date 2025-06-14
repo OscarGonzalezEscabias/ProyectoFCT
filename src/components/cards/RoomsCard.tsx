@@ -1,27 +1,43 @@
 import Buttons from "../../app/home/admin/rooms/[id]/Buttons";
 
-function RoomsCard({ rooms }: { rooms: any }) {
+function RoomsCard({ room }: { room: any }) {
+  if (!room) return null;
+
   return (
-    <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
-      <div className="flex justify-between items-start mb-2">
-        <h2 className="font-bold text-xl">{rooms.name}</h2>
-        <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
-          {rooms.id}
-        </span>
-      </div>
+    <div className="bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden max-w-sm">
+      {room.image ? (
+        <img
+          src={`/images/rooms/${room.image}`}
+          alt={room.name || "Habitación"}
+          className="w-full h-48 object-cover"
+        />
+      ) : (
+        <div className="w-full h-48 bg-gray-200 flex items-center justify-center text-gray-500">
+          Sin imagen
+        </div>
+      )}
 
-      <p className="text-gray-600 mb-2">{rooms.description}</p>
+      <div className="p-6">
+        <h2 className="text-xl font-semibold text-gray-800 mb-2">
+          {room.name || "Nombre no disponible"}
+        </h2>
 
-      <p className="text-gray-700 mb-1">
-        <span className="font-semibold">Capacidad:</span> {rooms.capacity} personas
-      </p>
+        <p className="text-gray-600 text-sm mb-2">
+          {room.description || "Descripción no disponible"}
+        </p>
 
-      <p className="text-gray-700 mb-4">
-        <span className="font-semibold">Precio:</span> {rooms.price} €
-      </p>
+        <p className="text-gray-700 mb-1">
+          <span className="font-semibold">Capacidad:</span> {room.capacity}{" "}
+          personas
+        </p>
 
-      <div className="border-t border-gray-200 pt-4">
-        <Buttons id={rooms.id} />
+        <p className="text-gray-700 mb-4">
+          <span className="font-semibold">Precio:</span> {room.price} €
+        </p>
+
+        <div className="mt-4 pt-4 border-t border-gray-200 flex justify-between items-center">
+          <Buttons id={room.id.toString()} />
+        </div>
       </div>
     </div>
   );

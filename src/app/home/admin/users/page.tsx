@@ -22,9 +22,11 @@ async function UsersPage() {
         </Link>
       </div>
 
-      {data.map((user: any) => (
-        <UserCard key={user.id} user={user} />
-      ))}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        {data.map((user: any) => (
+          <UserCard key={user.id} user={user} />
+        ))}
+      </div>
     </div>
 
   )

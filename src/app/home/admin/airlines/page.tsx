@@ -22,9 +22,11 @@ async function AirlinesPage() {
         </Link>
       </div>
 
-      {data.map((airline: any) => (
-        <AirlinesCard key={airline.id} airlines={airline} />
-      ))}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        {data.map((airline: any) => (
+          <AirlinesCard key={airline.id} airlines={airline} />
+        ))}
+      </div>
     </div>
   );
 }

@@ -180,7 +180,11 @@ function ReservationForm() {
             if (from === "profile") {
                 router.push(`/home/profile/${params.id}/my-reservations`)
             } else {
-                router.push("/home/admin/reservation");
+                if (currentUser?.role === "ADMIN") {
+                    router.push(`/home/admin/reservation`);
+                } else {
+                    router.push(`/home/hotels`);
+                }
             }
         } catch (error) {
             alert("Error al guardar la reserva");
