@@ -1,6 +1,27 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Buttons from "../../app/home/admin/aircrafts/[id]/Buttons";
+import axios from "axios";
+
+interface Airline {
+  id: number;
+  name: string;
+}
 
 function AircraftsCard({ aircrafts }: { aircrafts: any }) {
+  const [airlines, setAirlines] = useState<Airline[]>([]);
+
+  useEffect(() => {
+    axios
+      .get("/api/airlines")
+      .then((res) => setAirlines(res.data))
+      .catch((err) => console.error("Error cargando aerolíneas:", err));
+  }, []);
+
+  const airlineName =
+    airlines.find((a) => a.id === aircrafts.airline_id)?.name || "Desconocida";
+
   return (
     <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
       <div className="flex justify-between items-start mb-2">
@@ -8,7 +29,7 @@ function AircraftsCard({ aircrafts }: { aircrafts: any }) {
       </div>
 
       <p className="text-gray-700 mb-1">
-        <span className="font-semibold">Numero de aerolínea:</span> {aircrafts.airline_id}
+        <span className="font-semibold">Aerolínea:</span> {airlineName}
       </p>
 
       <p className="text-gray-700 mb-1">

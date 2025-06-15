@@ -43,6 +43,17 @@ function ReservationForm() {
     const { data: session, status } = useSession();
     const currentUser = session?.user as { id: number; role: string; name: string };
 
+    // Estado para fecha mínima (hoy)
+    const [minDate, setMinDate] = useState("");
+
+    useEffect(() => {
+        const today = new Date();
+        const yyyy = today.getFullYear();
+        const mm = String(today.getMonth() + 1).padStart(2, "0");
+        const dd = String(today.getDate()).padStart(2, "0");
+        setMinDate(`${yyyy}-${mm}-${dd}`);
+    }, []);
+
     useEffect(() => {
         async function fetchUsersRooms() {
             try {
@@ -150,8 +161,6 @@ function ReservationForm() {
             return;
         }
 
-
-
         const payload = {
             ...reservation,
             user_id: Number(reservation.user_id),
@@ -162,18 +171,12 @@ function ReservationForm() {
         try {
             if (params.id) {
                 if (from === "profile") {
-                    console.log(payload)
                     const response = await axios.put(`/api/reservation/edit/${params.hotelId}`, payload);
-                    console.log(response)
                 } else {
-                    console.log(payload)
                     const response = await axios.put(`/api/reservation/edit/${params.id}`, payload);
-                    console.log(response)
                 }
             } else {
-                console.log(payload)
                 const response = await axios.post("/api/reservation/add", payload);
-                console.log(response)
             }
             form.current?.reset();
 
@@ -251,6 +254,7 @@ function ReservationForm() {
                 onChange={handleChange}
                 className="border border-gray-300 rounded-lg p-2"
                 required
+                min={minDate}
             />
 
             <label htmlFor="check_out" className="text-gray-700 font-bold">
@@ -264,6 +268,7 @@ function ReservationForm() {
                 onChange={handleChange}
                 className="border border-gray-300 rounded-lg p-2"
                 required
+                min={minDate}
             />
 
             <label htmlFor="total_price" className="text-gray-700 font-bold">

@@ -2,7 +2,7 @@ import axios from "axios";
 import Flight_seatsCard from "@/components/cards/Flight_seatsCard";
 import Link from "next/link";
 
-const SEATS_PER_PAGE = 8;
+const SEATS_PER_PAGE = 6;
 
 async function LoadFlight_seats() {
   const { data } = await axios.get("http://localhost:3000/api/flight_seats");

@@ -16,15 +16,37 @@ function RegisterForm() {
             alert("Passwords do not match")
             return
         }
-        const response = await axios.post("/api/users/add", {
-            username: data.username,
-            email: data.email,
-            userpassword: data.password
-        })
 
-        if (response.status === 200) {
-            form.current?.reset()
-            router.push("/auth/login")
+        const formData = new FormData()
+        formData.append("username", data.username)
+        formData.append("email", data.email)
+        formData.append("userpassword", data.password)
+
+        // Aquí NO añadimos imagen, el usuario no tiene que subirla
+        // Si más adelante quieres añadir input tipo file, podrías poner:
+        // if(data.image?.length > 0) formData.append("image", data.image[0])
+
+        try {
+            const response = await axios.post("/api/users/add", formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            })
+
+            if (response.status === 200) {
+                form.current?.reset()
+                router.push("/auth/login")
+            }
+        } catch (error: any) {
+            if (axios.isAxiosError(error)) {
+                if (error.response?.status === 400 && error.response.data.error) {
+                    alert("Este usuario ya esta registrado") // Por ejemplo "User already exists" o "Email already exists"
+                } else {
+                    alert("Error inesperado, inténtalo más tarde.")
+                }
+            } else {
+                alert("Error desconocido")
+            }
         }
     })
 
@@ -35,22 +57,18 @@ function RegisterForm() {
 
             <label htmlFor="username" className='text-gray-700'>Username</label>
             <input type="text" className='border border-gray-300 rounded-lg p-2' {...register("username", { required: true })} />
-
             {errors.username && <p className="text-red-500 text-xs">Username is required</p>}
 
             <label htmlFor="email" className='text-gray-700'>Email</label>
             <input type="email" className='border border-gray-300 rounded-lg p-2' {...register("email", { required: true })} />
-
             {errors.email && <p className="text-red-500 text-xs">Email is required</p>}
 
             <label htmlFor="password" className='text-gray-700'>Password</label>
             <input type="password" className='border border-gray-300 rounded-lg p-2' {...register("password", { required: true })} />
-
             {errors.password && <p className="text-red-500 text-xs">Password is required</p>}
 
             <label htmlFor="confirmPassword" className='text-gray-700'>Confirm Password</label>
             <input type="password" className='border border-gray-300 rounded-lg p-2' {...register("confirmPassword", { required: true })} />
-
             {errors.confirmPassword && <p className="text-red-500 text-xs">Confirm Password is required</p>}
 
             <button type="submit" className='bg-blue-500 text-white p-2 rounded-lg cursor-pointer'>Registrar</button>

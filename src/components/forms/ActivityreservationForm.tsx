@@ -58,7 +58,6 @@ function ActivityReservationForm() {
         setUsers(usersRes.data);
         setActivities(activitiesRes.data);
 
-        // Si estamos creando una nueva reserva y hay activityId en la URL, preseleccionarlo
         if (!params.id && activityIdFromQuery) {
           setReservation((prev) => ({
             ...prev,
@@ -192,6 +191,12 @@ function ActivityReservationForm() {
     }
   };
 
+  const today = new Date().toISOString().slice(0, 10);
+
+  const maxFinalDate = new Date();
+  maxFinalDate.setDate(maxFinalDate.getDate() + 14);
+  const maxFinalDateStr = maxFinalDate.toISOString().slice(0, 10);
+
   return (
     <form
       onSubmit={handleSubmit}
@@ -229,7 +234,7 @@ function ActivityReservationForm() {
         onChange={handleChange}
         className="border border-gray-300 rounded-lg p-2 bg-gray-100"
         required
-        disabled={!!activityIdFromQuery} // Deshabilitado si viene por la URL
+        disabled={!!activityIdFromQuery}
       >
         <option value="">Selecciona una actividad</option>
         {activities.map((activity) => (
@@ -238,7 +243,6 @@ function ActivityReservationForm() {
           </option>
         ))}
       </select>
-
 
       <label htmlFor="initial_date" className="text-gray-700 font-bold">
         Fecha inicio
@@ -250,6 +254,7 @@ function ActivityReservationForm() {
         onChange={handleChange}
         className="border border-gray-300 rounded-lg p-2"
         required
+        min={today}
       />
 
       {selectedActivity?.types === "RENTING" && (
@@ -263,6 +268,8 @@ function ActivityReservationForm() {
             value={reservation.final_date}
             onChange={handleChange}
             className="border border-gray-300 rounded-lg p-2"
+            min={reservation.initial_date || today}
+            max={maxFinalDateStr}
           />
         </>
       )}

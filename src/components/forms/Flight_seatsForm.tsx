@@ -12,6 +12,11 @@ interface FlightSeat {
   price_modifier: number;
 }
 
+interface Flight {
+  id: number;
+  flight_number: string;
+}
+
 function FlightSeatsForm() {
   const [flightSeat, setFlightSeat] = useState<FlightSeat>({
     flight_id: 0,
@@ -21,11 +26,20 @@ function FlightSeatsForm() {
     price_modifier: 1.0,
   });
 
+  const [flights, setFlights] = useState<Flight[]>([]);
+
   const router = useRouter();
   const { id } = useParams();
   const form = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
+    // Cargar vuelos
+    axios
+      .get("/api/flights")
+      .then((res) => setFlights(res.data))
+      .catch((err) => console.error("Error cargando vuelos:", err));
+
+    // Si se está editando un asiento, cargar sus datos
     if (id) {
       axios
         .get(`/api/flight_seats/${id}`)
@@ -87,18 +101,25 @@ function FlightSeatsForm() {
       className="flex flex-col gap-4 bg-white p-6 rounded-lg w-96"
     >
       <label htmlFor="flight_id" className="text-gray-700 font-bold">
-        ID del Vuelo
+        Vuelo
       </label>
-      <input
-        type="number"
+      <select
         name="flight_id"
         id="flight_id"
         value={flightSeat.flight_id}
         onChange={handleChange}
         className="border border-gray-300 rounded-lg p-2"
-        min={1}
         required
-      />
+      >
+        <option value={0} disabled>
+          Selecciona un vuelo
+        </option>
+        {flights.map((flight) => (
+          <option key={flight.id} value={flight.id}>
+            {flight.flight_number}
+          </option>
+        ))}
+      </select>
 
       <label htmlFor="seat_number" className="text-gray-700 font-bold">
         Número del Asiento

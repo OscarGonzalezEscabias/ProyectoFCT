@@ -10,6 +10,11 @@ interface Aircraft {
   total_seats: number;
 }
 
+interface Airline {
+  id: number;
+  name: string;
+}
+
 function AircraftForm() {
   const [aircraft, setAircraft] = useState<Aircraft>({
     model: "",
@@ -17,12 +22,18 @@ function AircraftForm() {
     total_seats: 0,
   });
 
+  const [airlines, setAirlines] = useState<Airline[]>([]);
   const router = useRouter();
   const { id } = useParams();
   const form = useRef<HTMLFormElement>(null);
 
-  // Cargar datos para editar si hay id
+  // Cargar aerolíneas y datos del avión si hay ID
   useEffect(() => {
+    axios
+      .get("/api/airlines")
+      .then((res) => setAirlines(res.data))
+      .catch((err) => console.error("Error cargando aerolíneas:", err));
+
     if (id) {
       axios
         .get(`/api/aircrafts/${id}`)
@@ -34,7 +45,9 @@ function AircraftForm() {
     }
   }, [id]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
 
     setAircraft((prev) => ({
@@ -57,6 +70,7 @@ function AircraftForm() {
       } else {
         await axios.post("/api/aircrafts/add", aircraft);
       }
+
       form.current?.reset();
       router.push("/home/admin/aircrafts");
     } catch (error) {
@@ -85,18 +99,25 @@ function AircraftForm() {
       />
 
       <label htmlFor="airline_id" className="text-gray-700 font-bold">
-        ID de la Aerolínea
+        Aerolínea
       </label>
-      <input
-        type="number"
+      <select
         name="airline_id"
         id="airline_id"
         value={aircraft.airline_id}
         onChange={handleChange}
         className="border border-gray-300 rounded-lg p-2"
-        min={1}
         required
-      />
+      >
+        <option value={0} disabled>
+          Selecciona una aerolínea
+        </option>
+        {airlines.map((airline) => (
+          <option key={airline.id} value={airline.id}>
+            {airline.name}
+          </option>
+        ))}
+      </select>
 
       <label htmlFor="total_seats" className="text-gray-700 font-bold">
         Total de Asientos

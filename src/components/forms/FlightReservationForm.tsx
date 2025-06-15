@@ -227,7 +227,7 @@ function FlightReservationForm() {
       </select>
 
       <label htmlFor="reservation_date" className="text-gray-700 font-bold">
-        Fecha de reserva
+        Fecha de compra
       </label>
       <input
         type="datetime-local"
@@ -235,6 +235,7 @@ function FlightReservationForm() {
         value={reservation.reservation_date}
         onChange={handleChange}
         className="border border-gray-300 rounded-lg p-2"
+        disabled={!!params.id} // Deshabilitado si es edición
         required
       />
 

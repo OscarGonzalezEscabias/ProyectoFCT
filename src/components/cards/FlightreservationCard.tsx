@@ -76,7 +76,7 @@ function FlightReservationCard({ reservation }: { reservation: any }) {
         <span className="font-bold text-black">Asiento:</span> {asiento}
       </p>
       <p className="text-gray-500">
-        <span className="font-bold text-black">Fecha de reserva:</span> {fechaReserva}
+        <span className="font-bold text-black">Fecha de compra:</span> {fechaReserva}
       </p>
       <div className="mt-2">
         <span className="text-lg font-semibold text-blue-600">
