@@ -127,6 +127,30 @@ CREATE TABLE activity_reservations (
     FOREIGN KEY (activity_id) REFERENCES activities(id)
 );
 
+CREATE TABLE travels (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    name VARCHAR(255),
+    description TEXT,
+    outbound_flight_reservation_id INT,
+    return_flight_reservation_id INT,
+    hotel_reservation_id INT,
+    total_price DECIMAL(10, 2) NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (outbound_flight_reservation_id) REFERENCES flight_reservations(id),
+    FOREIGN KEY (return_flight_reservation_id) REFERENCES flight_reservations(id),
+    FOREIGN KEY (hotel_reservation_id) REFERENCES reservation(id)
+);
+
+CREATE TABLE travel_activities (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    travel_id INT NOT NULL,
+    activity_reservation_id INT NOT NULL,
+    FOREIGN KEY (travel_id) REFERENCES travels(id),
+    FOREIGN KEY (activity_reservation_id) REFERENCES activity_reservations(id)
+);
+
+
 INSERT INTO users (username, email, userpassword, role) VALUES
 ('Juan Pérez', 'juan@example.com', '1234', 'USER'),
 ('Ana Torres', 'ana@example.com', '1234', 'USER'),

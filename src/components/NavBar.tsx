@@ -68,6 +68,14 @@ export default function Navbar() {
                 Actividades
               </Link>
             </li>
+            <li>
+              <Link
+                href="/home/travels"
+                className="px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors"
+              >
+                Viajes
+              </Link>
+            </li>
             {currentUser?.role === "ADMIN" && (
               <>
                 <li>
@@ -108,6 +116,14 @@ export default function Navbar() {
                         className="block px-4 py-2 hover:bg-gray-700"
                       >
                         Actividades
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        href="/home/admin/travels"
+                        className="block px-4 py-2 hover:bg-gray-700"
+                      >
+                        Viajes
                       </Link>
                     </li>
                   </ul>
