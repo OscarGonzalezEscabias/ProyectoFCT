@@ -6,10 +6,9 @@ import ProfileCard from "./cards/ProfileCard";
 
 export default function Navbar() {
   const { data: session, status } = useSession();
-  const currentUser = session?.user as { id: number; role: string; name: string; email: string };
 
-  // status puede ser "loading", "authenticated" o "unauthenticated"
-  // Puedes usar loading para mostrar algo si quieres
+  // Cast para que currentUser tenga image opcional
+  const currentUser = session?.user as { id: number; role: string; name: string; email: string; image?: string };
 
   return (
     <nav className="flex justify-between items-center bg-gray-950 text-white px-24 py-6 shadow-md">

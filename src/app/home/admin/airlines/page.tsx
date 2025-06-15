@@ -1,3 +1,4 @@
+// /app/home/admin/airlines/page.tsx
 import axios from "axios";
 import AirlinesCard from "@/components/cards/AirlinesCard";
 import Link from "next/link";
@@ -9,7 +10,6 @@ async function LoadAirlines() {
 
 async function AirlinesPage() {
   const data = await LoadAirlines();
-  console.log(data);
 
   return (
     <div className="flex flex-col gap-4">
@@ -24,7 +24,7 @@ async function AirlinesPage() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {data.map((airline: any) => (
-          <AirlinesCard key={airline.id} airlines={airline} />
+          <AirlinesCard key={airline.id} airline={airline} />
         ))}
       </div>
     </div>

@@ -9,6 +9,7 @@ interface User {
   username: string;
   email: string;
   role: string;
+  image?: string;
 }
 
 export default function UserProfile({ params }: { params: { id: number } }) {
@@ -64,7 +65,11 @@ export default function UserProfile({ params }: { params: { id: number } }) {
     <div className="flex flex-col items-center mt-10 bg-white p-6 rounded-lg shadow-lg" >
       <div className="flex flex-row items-start gap-10 w-full max-w-4xl">
         <img
-          src="https://via.placeholder.com/200"
+          src={
+            user?.image
+              ? `/images/users/${user.image}`
+              : "https://st2.depositphotos.com/19428878/44645/v/450/depositphotos_446453832-stock-illustration-default-avatar-profile-icon-social.jpg"
+          }
           alt="Foto de perfil"
           className="rounded-xl w-52 h-52 object-cover"
         />

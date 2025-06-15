@@ -58,10 +58,10 @@ function ActivityReservationCard({ reservation }: { reservation: ActivityReserva
 
   const finalDateFormatted = reservation.final_date
     ? new Date(reservation.final_date).toLocaleDateString("es-ES", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      })
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    })
     : "—";
 
   return (
@@ -71,16 +71,17 @@ function ActivityReservationCard({ reservation }: { reservation: ActivityReserva
     >
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-lg font-semibold text-gray-800">Reserva #{reservation.id}</h2>
-        <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
-          Usuario: {usuario}
-        </span>
       </div>
 
-      <div className="text-sm text-gray-600 mb-2">
-        <p><strong>Actividad:</strong> {actividad}</p>
-        <p><strong>Fecha inicio:</strong> {initialDateFormatted}</p>
-        <p><strong>Fecha fin:</strong> {finalDateFormatted}</p>
-      </div>
+      <p className="text-gray-500">
+        <span className="font-bold text-black">Actividad:</span> {actividad}
+      </p>
+      <p className="text-gray-500">
+        <span className="font-bold text-black">Fecha inicio:</span> {initialDateFormatted}
+      </p>
+      <p className="text-gray-500">
+        <span className="font-bold text-black">Fecha fin:</span> {finalDateFormatted}
+      </p>
 
       <div className="mt-4">
         <span className="text-lg font-semibold text-blue-600">

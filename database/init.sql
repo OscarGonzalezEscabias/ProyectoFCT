@@ -11,6 +11,7 @@ CREATE TABLE users (
     username VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL,
     userpassword VARCHAR(255) NOT NULL,
+    image VARCHAR(255),
     role ENUM('ADMIN', 'USER') NOT NULL DEFAULT 'USER'
 );
 
@@ -161,12 +162,12 @@ INSERT INTO airports (iata_code, name, city, country) VALUES
 ('LIS', 'Aeroporto de Lisboa', 'Lisboa', 'Portugal'),
 ('CDG', 'Charles de Gaulle', 'París', 'Francia');
 
-INSERT INTO airlines (name, iata_code) VALUES
-('Iberia', 'IB'),
-('Vueling', 'VY'),
-('Air Europa', 'UX'),
-('Ryanair', 'FR'),
-('KLM', 'KL');
+INSERT INTO airlines (name, iata_code, logo_url) VALUES
+('Iberia', 'IB', 'iberia.jpg'),
+('Vueling', 'VY', 'vueling.jpg'),
+('Air Europa', 'UX', 'air_europa.jpg'),
+('Ryanair', 'FR', 'ryanair.jpg'),
+('KLM', 'KL', 'klm.jpg');
 
 INSERT INTO aircrafts (model, airline_id, total_seats) VALUES
 ('Airbus A320', 1, 180),

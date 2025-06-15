@@ -7,7 +7,7 @@ import { useRouter, useParams } from "next/navigation";
 interface Airline {
   name: string;
   iata_code: string;
-  logo_url?: string;
+  logo_url: string; // URL completa, por ejemplo "/images/uuid-nombre.jpg"
 }
 
 function AirlinesForm() {
@@ -17,15 +17,26 @@ function AirlinesForm() {
     logo_url: "",
   });
 
-  const router = useRouter();
-  const { id } = useParams(); // Detecta si hay id para editar
+  const [preview, setPreview] = useState<string>("");
+
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const form = useRef<HTMLFormElement>(null);
+
+  const router = useRouter();
+  const { id } = useParams();
 
   useEffect(() => {
     if (id) {
       axios
         .get(`/api/airlines/${id}`)
-        .then((res) => setAirline(res.data))
+        .then((res) => {
+          setAirline(res.data);
+          if (res.data.logo_url) {
+            setPreview(`/images/airlines/${res.data.logo_url}`); // Aquí la URL ya está completa
+          }
+        })
         .catch((err) => {
           console.error("Error cargando la aerolínea:", err);
           alert("No se pudo cargar la aerolínea.");
@@ -35,26 +46,52 @@ function AirlinesForm() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setAirline((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setAirline((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] || null;
+    setSelectedFile(file);
+
+    if (file) {
+      const objectUrl = URL.createObjectURL(file);
+      setPreview(objectUrl);
+
+      // Liberar URL para evitar memory leaks
+      return () => URL.revokeObjectURL(objectUrl);
+    } else {
+      setPreview("");
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!airline.name || !airline.iata_code) {
-      alert("Por favor, completa los campos obligatorios (nombre e IATA).");
+      alert("Por favor, completa todos los campos obligatorios.");
       return;
     }
 
     try {
-      if (id) {
-        await axios.put(`/api/airlines/edit/${id}`, airline);
-      } else {
-        await axios.post("/api/airlines/add", airline);
+      const formData = new FormData();
+      formData.append("name", airline.name);
+      formData.append("iata_code", airline.iata_code);
+
+      if (selectedFile) {
+        formData.append("logo", selectedFile);
       }
+
+      if (id) {
+        formData.append("existing_logo_url", airline.logo_url); // Nombre clave correcto para el backend
+        await axios.put(`/api/airlines/edit/${id}`, formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+      } else {
+        await axios.post("/api/airlines/add", formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+      }
+
       form.current?.reset();
       router.push("/home/admin/airlines");
     } catch (error) {
@@ -96,18 +133,33 @@ function AirlinesForm() {
         required
       />
 
-      <label htmlFor="logo_url" className="text-gray-700 font-bold">
-        URL del logo (opcional)
+      <label htmlFor="logo" className="text-gray-700 font-bold">
+        Logo de la aerolínea
       </label>
+      <button
+        type="button"
+        onClick={() => fileInputRef.current?.click()}
+        className="bg-gray-200 text-gray-800 px-4 py-2 rounded hover:bg-gray-300 w-fit"
+      >
+        Elegir archivo
+      </button>
       <input
-        type="text"
-        name="logo_url"
-        id="logo_url"
-        value={airline.logo_url}
-        onChange={handleChange}
-        className="border border-gray-300 rounded-lg p-2"
-        placeholder="https://example.com/logo.png"
+        type="file"
+        name="logo"
+        id="logo"
+        accept="image/*"
+        onChange={handleFileChange}
+        ref={fileInputRef}
+        className="hidden"
       />
+
+      {preview && (
+        <img
+          src={preview}
+          alt="Preview logo"
+          className="w-full h-48 object-cover rounded border mt-2"
+        />
+      )}
 
       <button
         type="submit"

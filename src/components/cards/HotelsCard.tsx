@@ -12,7 +12,7 @@ function HotelsCard({ hotel }: { hotel: Hotel }) {
   if (!hotel) return null;
 
   return (
-    <div className="bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden max-w-sm">
+    <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden w-full max-w-md">
       {hotel.image ? (
         <img
           src={`/uploads/hotels/${hotel.image}`}

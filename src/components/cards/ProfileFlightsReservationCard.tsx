@@ -67,7 +67,10 @@ function FlightReservationCard({ reservation }: { reservation: any }) {
       href={`/home/profile/${reservation.user_id}/my-reservations/flights-reservation/${reservation.id}`}
       className="bg-white p-4 rounded-lg shadow-lg mb-3 hover:bg-gray-100 transition"
     >
-      <h2 className="font-bold text-2xl">{usuario}</h2>
+
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="font-bold text-2xl">{usuario}</h2>
+      </div>
 
       <p className="text-gray-500">
         <span className="font-bold text-black">Vuelo:</span> {vuelo}
@@ -78,9 +81,11 @@ function FlightReservationCard({ reservation }: { reservation: any }) {
       <p className="text-gray-500">
         <span className="font-bold text-black">Fecha de reserva:</span> {fechaReserva}
       </p>
-      <p className="text-gray-500">
-        <span className="font-bold text-black">Precio total:</span> {reservation.total_price} €
-      </p>
+      <div className="mt-4">
+        <span className="text-lg font-semibold text-blue-600">
+          Total: {Number(reservation.total_price).toFixed(2)} €
+        </span>
+      </div>
     </Link>
   );
 }
