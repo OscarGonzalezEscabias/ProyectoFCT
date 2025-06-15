@@ -1,13 +1,30 @@
 import axios from "axios";
 import TravelsCard from "@/components/cards/TravelsCard";
 
-async function LoadTravels() {
-  const { data } = await axios.get("http://localhost:3000/api/travels");
-  return data;
+async function LoadDataTravels() {
+  const { data: travels } = await axios.get("http://localhost:3000/api/travels");
+
+  const travelsWithFlights = await Promise.all(
+    travels.map(async (travel: any) => {
+      const [outboundRes, returnRes] = await Promise.all([
+        axios.get(`http://localhost:3000/api/flights/${travel.outbound_flight_reservation_id}`),
+        axios.get(`http://localhost:3000/api/flights/${travel.return_flight_reservation_id}`)
+      ]);
+
+      return {
+        ...travel,
+        outboundFlight: outboundRes.data,
+        returnFlight: returnRes.data,
+      };
+    })
+  );
+
+  return travelsWithFlights;
 }
 
+
 async function TravelsPage() {
-  const data = await LoadTravels();
+  const data = await LoadDataTravels();
   console.log(data);
 
   return (

@@ -308,18 +308,29 @@ function TravelCreatorPage() {
                             outboundSeats={outboundSeats}
                             returnSeats={returnSeats}
                         />
-                        <button type="submit">Finalizar viaje</button>
+                        <button type="submit" className="bg-blue-500 text-white p-2 rounded-lg cursor-pointer">Finalizar viaje</button>
                     </>
                 )}
 
                 <div className="flex justify-between">
+                    {step === 0 && (
+                        <>
+                        <button type="button" onClick={() => router.push("/home/travels")} className="bg-red-500 text-white p-2 rounded-lg cursor-pointer">
+                            Cancelar
+                        </button>
+
+                        <button type="button" onClick={() => setStep((s) => s + 1)} className="bg-blue-500 text-white p-2 rounded-lg cursor-pointer">
+                            Siguiente
+                        </button>
+                        </>
+                    )}
                     {step > 0 && (
-                        <button type="button" onClick={() => setStep((s) => s - 1)}>
+                        <button type="button" onClick={() => setStep((s) => s - 1)} className="bg-blue-500 text-white p-2 rounded-lg cursor-pointer">
                             Atrás
                         </button>
                     )}
-                    {step < 5 && (
-                        <button type="button" onClick={() => setStep((s) => s + 1)}>
+                    {step < 5 && step > 0 && (
+                        <button type="button" onClick={() => setStep((s) => s + 1)} className="bg-blue-500 text-white p-2 rounded-lg cursor-pointer">
                             Siguiente
                         </button>
                     )}

@@ -12,7 +12,7 @@ function Buttons({id, hotelId}: {id: string, hotelId: string}) {
                 if (confirm("¿Estás seguro de que quieres eliminar esta reserva?")) {
                     const response = await axios.delete(`/api/reservation/del/${hotelId}`)
                     console.log(response)
-                    router.push(`/home/profile/${id}/my-reservations/hotels-reservation`)
+                    router.push(`/home/profile/${id}/my-reservations`)
                 }
             }}>Eliminar</button>
         </div>
