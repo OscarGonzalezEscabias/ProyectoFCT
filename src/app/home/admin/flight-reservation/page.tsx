@@ -6,17 +6,54 @@ async function LoadFligthReservation() {
   return data
 }
 
-async function FligthReservationPage() {
+const FLIGHT_RESERVATIONS_PER_PAGE = 6;
+
+async function FligthReservationPage({ searchParams }: { searchParams?: { page?: string } }) {
   const data = await LoadFligthReservation()
   console.log(data)
+
+  const page = parseInt(searchParams?.page || "1", 10);
+  const totalPages = Math.ceil(data.length / FLIGHT_RESERVATIONS_PER_PAGE);
+  const startIndex = (page - 1) * FLIGHT_RESERVATIONS_PER_PAGE;
+  const endIndex = startIndex + FLIGHT_RESERVATIONS_PER_PAGE;
+  const pagedReservations = data.slice(startIndex, endIndex);
 
   return (
     <div className="flex flex-col gap-4">
       <h1 className="text-white text-3xl">Reservas</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {data.map((flight_reservations: any) => (
+        {pagedReservations.map((flight_reservations: any) => (
           <FlightreservationCard key={flight_reservations.id} reservation={flight_reservations} />
         ))}
+      </div>
+
+      {/* Paginación */}
+      <div className="flex justify-center items-center gap-4 mt-6">
+        <a
+          href={`/home/flight-reservations?page=${page - 1}`}
+          className={`px-4 py-2 rounded-lg ${
+            page <= 1
+              ? "bg-gray-400 cursor-not-allowed pointer-events-none"
+              : "bg-blue-500 hover:bg-blue-600 text-white"
+          }`}
+        >
+          Anterior
+        </a>
+
+        <span className="text-white">
+          Página {page} de {totalPages}
+        </span>
+
+        <a
+          href={`/home/flight-reservations?page=${page + 1}`}
+          className={`px-4 py-2 rounded-lg ${
+            page >= totalPages
+              ? "bg-gray-400 cursor-not-allowed pointer-events-none"
+              : "bg-blue-500 hover:bg-blue-600 text-white"
+          }`}
+        >
+          Siguiente
+        </a>
       </div>
     </div>
   )

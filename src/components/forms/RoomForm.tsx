@@ -13,6 +13,11 @@ interface Room {
   image: string; // nombre archivo
 }
 
+interface Hotel {
+  id: number;
+  namehotel: string;
+}
+
 function RoomForm() {
   const [room, setRoom] = useState<Room>({
     name: "",
@@ -23,17 +28,22 @@ function RoomForm() {
     image: "",
   });
 
+  const [hotels, setHotels] = useState<Hotel[]>([]);
   const [preview, setPreview] = useState<string>("");
-
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-
   const fileInputRef = useRef<HTMLInputElement>(null);
-
   const router = useRouter();
   const { id } = useParams();
   const form = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
+    // Cargar lista de hoteles para el select
+    axios
+      .get("/api/hotels")
+      .then((res) => setHotels(res.data))
+      .catch((err) => console.error("Error al cargar hoteles:", err));
+
+    // Si es edición, cargar datos de la habitación
     if (id) {
       axios
         .get(`/api/rooms/${id}`)
@@ -51,7 +61,7 @@ function RoomForm() {
   }, [id]);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
 
@@ -186,18 +196,22 @@ function RoomForm() {
       />
 
       <label htmlFor="hotel_id" className="text-gray-700 font-bold">
-        ID del Hotel
+        Hotel
       </label>
-      <input
-        type="number"
+      <select
         name="hotel_id"
         id="hotel_id"
         value={room.hotel_id}
         onChange={handleChange}
         className="border border-gray-300 rounded-lg p-2"
-        min={1}
         required
-      />
+      >
+        {hotels.map((hotel) => (
+          <option key={hotel.id} value={hotel.id}>
+            {hotel.namehotel}
+          </option>
+        ))}
+      </select>
 
       <label htmlFor="image" className="text-gray-700 font-bold">
         Imagen de la habitación

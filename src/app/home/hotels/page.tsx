@@ -9,10 +9,24 @@ async function LoadHotels() {
   return data;
 }
 
-async function HotelsPage() {
+interface Props {
+  searchParams?: { page?: string };
+}
+
+const HOTELS_PER_PAGE = 6;
+
+async function HotelsPage({ searchParams }: Props) {
   const session = await getServerSession(authOptions);
-  const data = await LoadHotels();
   const currentUser = session?.user as { id: number; role: string; name: string };
+
+  const page = parseInt(searchParams?.page || "1", 10);
+  const data = await LoadHotels();
+
+  // Calcular paginación
+  const totalPages = Math.ceil(data.length / HOTELS_PER_PAGE);
+  const startIndex = (page - 1) * HOTELS_PER_PAGE;
+  const endIndex = startIndex + HOTELS_PER_PAGE;
+  const pagedHotels = data.slice(startIndex, endIndex);
 
   return (
     <div className="flex flex-col gap-4">
@@ -28,9 +42,37 @@ async function HotelsPage() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {data.map((hotel: any) => (
+        {pagedHotels.map((hotel: any) => (
           <HotelsCard key={hotel.id} hotel={hotel} />
         ))}
+      </div>
+
+      <div className="flex justify-center items-center gap-4 mt-6">
+        <Link
+          href={`/home/hotels?page=${page - 1}`}
+          className={`px-4 py-2 rounded-lg ${
+            page <= 1
+              ? "bg-gray-400 cursor-not-allowed pointer-events-none"
+              : "bg-blue-500 hover:bg-blue-600 text-white"
+          }`}
+        >
+          Anterior
+        </Link>
+
+        <span className="text-white">
+          Página {page} de {totalPages}
+        </span>
+
+        <Link
+          href={`/home/hotels?page=${page + 1}`}
+          className={`px-4 py-2 rounded-lg ${
+            page >= totalPages
+              ? "bg-gray-400 cursor-not-allowed pointer-events-none"
+              : "bg-blue-500 hover:bg-blue-600 text-white"
+          }`}
+        >
+          Siguiente
+        </Link>
       </div>
     </div>
   );

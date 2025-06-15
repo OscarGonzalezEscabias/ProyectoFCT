@@ -1,7 +1,16 @@
+"use client";
+
 import Link from "next/link";
 import Buttons from "../../app/home/activities/[id]/Buttons";
 
 function AcitivitiesCard({ activities }: { activities: any }) {
+  const handleReserveClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (!activities.available) {
+      e.preventDefault();
+      alert("Esta actividad no está disponible para reservar.");
+    }
+  };
+
   return (
     <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden w-full max-w-md">
       {activities.image && (
@@ -44,11 +53,20 @@ function AcitivitiesCard({ activities }: { activities: any }) {
         </div>
 
         <div className="mt-4 pt-4 border-t border-gray-200 flex justify-between items-center">
-          <Link href={`/home/activities/book`}>
-            <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition">
+          {activities.available ? (
+            <Link href={`/home/activities/book?activityId=${activities.id}`}>
+              <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition">
+                Reservar
+              </button>
+            </Link>
+          ) : (
+            <button
+              onClick={handleReserveClick}
+              className="bg-gray-400 text-white px-4 py-2 rounded-lg cursor-not-allowed"
+            >
               Reservar
             </button>
-          </Link>
+          )}
 
           <Buttons id={activities.id} />
         </div>

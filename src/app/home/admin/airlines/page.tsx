@@ -1,15 +1,22 @@
-// /app/home/admin/airlines/page.tsx
 import axios from "axios";
 import AirlinesCard from "@/components/cards/AirlinesCard";
 import Link from "next/link";
+
+const AIRLINES_PER_PAGE = 6;
 
 async function LoadAirlines() {
   const { data } = await axios.get("http://localhost:3000/api/airlines");
   return data;
 }
 
-async function AirlinesPage() {
+async function AirlinesPage({ searchParams }: { searchParams?: { page?: string } }) {
   const data = await LoadAirlines();
+
+  const page = parseInt(searchParams?.page || "1", 10);
+  const totalPages = Math.ceil(data.length / AIRLINES_PER_PAGE);
+  const startIndex = (page - 1) * AIRLINES_PER_PAGE;
+  const endIndex = startIndex + AIRLINES_PER_PAGE;
+  const pagedAirlines = data.slice(startIndex, endIndex);
 
   return (
     <div className="flex flex-col gap-4">
@@ -23,9 +30,38 @@ async function AirlinesPage() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {data.map((airline: any) => (
+        {pagedAirlines.map((airline: any) => (
           <AirlinesCard key={airline.id} airline={airline} />
         ))}
+      </div>
+
+      {/* Paginación */}
+      <div className="flex justify-center items-center gap-4 mt-6">
+        <a
+          href={`?page=${page - 1}`}
+          className={`px-4 py-2 rounded-lg ${
+            page <= 1
+              ? "bg-gray-400 cursor-not-allowed pointer-events-none"
+              : "bg-blue-500 hover:bg-blue-600 text-white"
+          }`}
+        >
+          Anterior
+        </a>
+
+        <span className="text-white">
+          Página {page} de {totalPages}
+        </span>
+
+        <a
+          href={`?page=${page + 1}`}
+          className={`px-4 py-2 rounded-lg ${
+            page >= totalPages
+              ? "bg-gray-400 cursor-not-allowed pointer-events-none"
+              : "bg-blue-500 hover:bg-blue-600 text-white"
+          }`}
+        >
+          Siguiente
+        </a>
       </div>
     </div>
   );

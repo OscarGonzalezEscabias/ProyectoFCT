@@ -5,22 +5,22 @@ import { useRouter, useParams, useSearchParams } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 
 function UserForm() {
-
-    const searchParams = useSearchParams();
-    const from = searchParams.get('from');
+    const searchParams = useSearchParams()
+    const from = searchParams.get('from')
 
     const [user, setUser] = useState({
         username: "",
         email: "",
         userpassword: "",
         confirmPassword: "",
-        role: "USER"
+        role: "USER",
+        image: "" // <-- añadimos campo imagen (nombre o url)
     })
 
     const router = useRouter()
     const params = useParams()
-    const { data: session, status } = useSession();
-    const currentUser = session?.user as { id: number; role: string; name: string };
+    const { data: session, status } = useSession()
+    const currentUser = session?.user as { id: number; role: string; name: string }
 
     const form = useRef<HTMLFormElement>(null)
     const fileInputRef = useRef<HTMLInputElement>(null)
@@ -28,23 +28,31 @@ function UserForm() {
     const [file, setFile] = useState<File | null>(null)
     const [preview, setPreview] = useState<string | null>(null)
 
+    // Cuando cambia la imagen seleccionada por input file
+    useEffect(() => {
+        if (!file) {
+            // Si no hay archivo nuevo seleccionado, mostrar la imagen actual
+            if (user.image) {
+                // Asumiendo que la ruta pública es /images/users/ + nombre archivo
+                setPreview(`/images/users/${user.image}`)
+            } else {
+                setPreview(null)
+            }
+            return
+        }
+        // Si hay un archivo nuevo seleccionado, crear url temporal para preview
+        const objectUrl = URL.createObjectURL(file)
+        setPreview(objectUrl)
+
+        return () => URL.revokeObjectURL(objectUrl)
+    }, [file, user.image])
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
         setUser({
             ...user,
             [e.target.name]: e.target.value
         })
     }
-
-    useEffect(() => {
-        if (!file) {
-            setPreview(null)
-            return
-        }
-        const objectUrl = URL.createObjectURL(file)
-        setPreview(objectUrl)
-
-        return () => URL.revokeObjectURL(objectUrl)
-    }, [file])
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (!e.target.files || e.target.files.length === 0) {
@@ -62,7 +70,6 @@ function UserForm() {
             return
         }
 
-        // Si quieres enviar el archivo, puedes usar FormData
         const formData = new FormData()
         formData.append("username", user.username)
         formData.append("email", user.email)
@@ -70,6 +77,9 @@ function UserForm() {
         formData.append("role", user.role)
         if (file) {
             formData.append("image", file)
+        } else if (user.image) {
+            // Enviar nombre imagen actual para mantenerla si no se cambia
+            formData.append("currentImage", user.image)
         }
 
         try {
@@ -99,13 +109,21 @@ function UserForm() {
         }
     }
 
+    // Cargar datos usuario para editar
     useEffect(() => {
         if (params.id) {
             axios.get(`/api/users/${params.id}`)
                 .then((res) => {
-                    setUser(res.data)
-                    // Aquí podrías cargar preview si tienes url de imagen
-                    // setPreview(res.data.imageUrl || null)
+                    setUser({
+                        ...res.data,
+                        userpassword: "", // vaciar password por seguridad
+                        confirmPassword: "",
+                        image: res.data.image || "" // asegurarse que hay campo image con nombre/url
+                    })
+                    // El preview se actualizará automáticamente por el useEffect que depende de user.image y file
+                })
+                .catch(() => {
+                    alert("Error cargando usuario.")
                 })
         }
     }, [params.id])
@@ -134,7 +152,6 @@ function UserForm() {
                 </div>
             )}
 
-            {/* Aquí añadimos la subida de imagen */}
             <label className='text-gray-700'>Foto de perfil</label>
             <button
                 type="button"
@@ -158,6 +175,7 @@ function UserForm() {
                     className="w-full h-48 object-cover rounded border mt-2"
                 />
             )}
+
             <button type="submit" className='bg-blue-500 text-white p-2 rounded-lg cursor-pointer'>{params.id ? "Editar" : "Añadir"}</button>
         </form>
     )

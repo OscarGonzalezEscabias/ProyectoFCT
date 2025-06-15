@@ -163,14 +163,44 @@ INSERT INTO hotel (namehotel, description, image) VALUES
 ('Montaña Blanca Resort', 'Resort en la montaña ideal para vacaciones de invierno y senderismo.', 'montanablanca.jpg'),
 ('Ciudad Central Hotel', 'Ubicación perfecta en el centro de la ciudad, cerca de los principales puntos turísticos.', 'ciudadcentral.jpg'),
 ('Hotel Jardín Tropical', 'Un oasis tropical con jardines exuberantes, spa y piscina.', 'jardintropical.jpg'),
-('Hotel Boutique Luna', 'Hotel boutique con diseño moderno y atención personalizada.', 'luna.jpg');
+('Hotel Boutique Luna', 'Hotel boutique con diseño moderno y atención personalizada.', 'luna.jpg'),
+('EcoLodge Verde', 'Hotel ecológico en plena naturaleza, ideal para desconectar y reconectar con el entorno.', 'ecolodge.jpg'),
+('Skyline Hotel', 'Hotel moderno en rascacielos con vistas panorámicas de la ciudad.', 'skyline.jpg'),
+('Hotel Plaza Real', 'Hotel clásico con encanto histórico en el corazón de la ciudad.', 'plazareal.jpg'),
+('Resort Oasis del Desierto', 'Un refugio de lujo en el desierto con spa y piscina infinity.', 'oasisdesierto.jpg'),
+('Hotel Montaña Azul', 'Perfecto para escapadas de montaña con senderos y actividades al aire libre.', 'montanaazul.jpg');
 
 INSERT INTO rooms (name, hotel_id, description, capacity, price, image) VALUES
-('Suite Playa', 1, 'Suite con vistas al mar y terraza privada.', 2, 160.00, 'suite_playa.jpg'),
-('Cabaña Nieve', 2, 'Cabaña con chimenea y vista a la montaña.', 4, 140.00, 'cabana_nieve.jpg'),
-('Doble Centro', 3, 'Habitación doble en el centro de la ciudad.', 2, 100.00, 'doble_centro.jpg'),
-('Tropical Deluxe', 4, 'Habitación con balcón al jardín tropical.', 2, 130.00, 'tropical_deluxe.jpg'),
-('Luna Suite', 5, 'Suite moderna con diseño exclusivo.', 2, 180.00, 'luna_suite.jpg');
+('Habitación Familiar', 1, 'Espaciosa habitación con dos camas dobles y vista al mar.', 4, 200.00, 'familiar_solana.jpg'),
+('Suite Jacuzzi', 1, 'Suite con jacuzzi privado y balcón con vistas al océano.', 2, 220.00, 'suite_jacuzzi.jpg'),
+
+('Cabaña Familiar', 2, 'Cabaña rústica para familias, con sala de estar y chimenea.', 6, 180.00, 'cabana_familiar.jpg'),
+('Habitación Doble Nieve', 2, 'Habitación doble con vista a la montaña y calefacción.', 2, 120.00, 'doble_nieve.jpg'),
+
+('Habitación Individual Centro', 3, 'Habitación individual cómoda en pleno centro.', 1, 75.00, 'individual_centro.jpg'),
+('Suite Ejecutiva', 3, 'Suite con escritorio y sala de reuniones pequeña.', 2, 150.00, 'suite_ejecutiva.jpg'),
+
+('Habitación Jardinera', 4, 'Habitación con balcón y vista al jardín tropical.', 2, 115.00, 'habitacion_jardinera.jpg'),
+('Suite Spa', 4, 'Suite con acceso directo al spa y jacuzzi privado.', 2, 210.00, 'suite_spa.jpg'),
+
+('Habitación Deluxe Luna', 5, 'Habitación deluxe con cama king size y diseño exclusivo.', 2, 160.00, 'deluxe_luna.jpg'),
+('Habitación Doble Luna', 5, 'Habitación doble moderna con balcón.', 2, 130.00, 'doble_luna.jpg'),
+
+('Habitación Eco Simple', 6, 'Habitación sencilla con muebles ecológicos.', 1, 80.00, 'eco_simple.jpg'),
+('Suite Bosque', 6, 'Suite con vista panorámica al bosque y terraza privada.', 2, 180.00, 'suite_bosque.jpg'),
+
+('Habitación Skyline Doble', 7, 'Habitación doble con vistas a la ciudad y decoración moderna.', 2, 140.00, 'doble_skyline.jpg'),
+('Suite Presidencial', 7, 'Amplia suite con sala de estar, cocina y terraza panorámica.', 4, 350.00, 'suite_presidencial.jpg'),
+
+('Habitación Plaza Superior', 8, 'Habitación con muebles clásicos y balcón a la plaza.', 2, 120.00, 'plaza_superior.jpg'),
+('Suite Plaza', 8, 'Suite con sala de estar y vistas a la plaza.', 3, 180.00, 'suite_plaza.jpg'),
+
+('Habitación Oasis Standard', 9, 'Habitación estándar con decoración árabe y vistas al desierto.', 2, 140.00, 'oasis_standard.jpg'),
+('Suite Infinity', 9, 'Suite con piscina privada y vistas al desierto.', 2, 300.00, 'suite_infinity.jpg'),
+
+('Habitación Montaña Standard', 10, 'Habitación acogedora con balcón a la montaña.', 2, 130.00, 'montana_standard.jpg'),
+('Habitación Familiar Montaña', 10, 'Habitación familiar con dos camas dobles y chimenea.', 4, 210.00, 'montana_familiar.jpg');
+
 
 INSERT INTO reservation (user_id, room_id, check_in, check_out, total_price) VALUES
 (1, 1, '2025-07-01', '2025-07-05', 640.00),

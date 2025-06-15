@@ -41,9 +41,10 @@ function ActivityReservationForm() {
   const params = useParams();
   const form = useRef<HTMLFormElement>(null);
   const searchParams = useSearchParams();
-  const from = searchParams.get('from');
+  const from = searchParams.get("from");
+  const activityIdFromQuery = searchParams.get("activityId");
 
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   const currentUser = session?.user as { id: number; role: string; name: string } | undefined;
 
   useEffect(() => {
@@ -53,8 +54,17 @@ function ActivityReservationForm() {
           axios.get("/api/users"),
           axios.get("/api/activities"),
         ]);
+
         setUsers(usersRes.data);
         setActivities(activitiesRes.data);
+
+        // Si estamos creando una nueva reserva y hay activityId en la URL, preseleccionarlo
+        if (!params.id && activityIdFromQuery) {
+          setReservation((prev) => ({
+            ...prev,
+            activity_id: Number(activityIdFromQuery),
+          }));
+        }
       } catch (error) {
         console.error("Error cargando datos", error);
       }
@@ -64,12 +74,16 @@ function ActivityReservationForm() {
 
   useEffect(() => {
     if (params.id) {
-      if (from === "profile") {
-        axios
-          .get(`/api/activities-reservation/${params.activityId}`)
-          .then((res) => {
-            const data = res.data;
-            setReservation({
+      const endpoint =
+        from === "profile"
+          ? `/api/activities-reservation/${params.activityId}`
+          : `/api/activities-reservation/${params.id}`;
+
+      axios
+        .get(endpoint)
+        .then((res) => {
+          const data = res.data;
+          setReservation({
             user_id: data.user_id,
             activity_id: data.activity_id,
             initial_date: data.initial_date,
@@ -80,23 +94,6 @@ function ActivityReservationForm() {
         .catch(() => {
           alert("Error al cargar la reserva de actividad");
         });
-      } else {
-        axios
-          .get(`/api/activities-reservation/${params.id}`)
-          .then((res) => {
-            const data = res.data;
-            setReservation({
-            user_id: data.user_id,
-            activity_id: data.activity_id,
-            initial_date: data.initial_date,
-            final_date: data.final_date || "",
-            total_price: Number(data.total_price),
-          });
-        })
-        .catch(() => {
-          alert("Error al cargar la reserva de actividad");
-        });
-      }
     }
   }, [params.id]);
 
@@ -155,7 +152,6 @@ function ActivityReservationForm() {
       return;
     }
 
-    // Si no es admin, forzamos que el user_id sea el del usuario logueado
     const payload = {
       ...reservation,
       user_id: currentUser.role === "ADMIN" ? Number(reservation.user_id) : currentUser.id,
@@ -167,7 +163,6 @@ function ActivityReservationForm() {
           : null,
     };
 
-    // Validación básica
     if (!payload.user_id || !payload.activity_id || !reservation.initial_date) {
       alert("Por favor, completa todos los campos requeridos.");
       return;
@@ -179,10 +174,12 @@ function ActivityReservationForm() {
       } else {
         await axios.post("/api/activities-reservation/add", payload);
       }
+
       form.current?.reset();
-      if(from === "profile"){
-        router.push(`/home/profile/${params.id}/my-reservations`)
-      }else{
+
+      if (from === "profile") {
+        router.push(`/home/profile/${params.id}/my-reservations`);
+      } else {
         if (currentUser?.role === "ADMIN") {
           router.push("/home/admin/activities-reservation");
         } else {
@@ -201,29 +198,27 @@ function ActivityReservationForm() {
       ref={form}
       className="flex flex-col gap-4 bg-white p-6 rounded-lg w-96"
     >
-      {/* Si es admin, mostramos el selector de usuarios, si no, no */}
       {currentUser?.role === "ADMIN" && (
-        <label htmlFor="user_id" className="text-gray-700 font-bold">
-          Usuario
-        </label>
+        <>
+          <label htmlFor="user_id" className="text-gray-700 font-bold">
+            Usuario
+          </label>
+          <select
+            name="user_id"
+            value={reservation.user_id}
+            onChange={handleChange}
+            className="border border-gray-300 rounded-lg p-2"
+            required
+          >
+            <option value="">Selecciona un usuario</option>
+            {users.map((user) => (
+              <option key={user.id} value={user.id}>
+                {user.username}
+              </option>
+            ))}
+          </select>
+        </>
       )}
-      {currentUser?.role === "ADMIN" && (
-        <select
-          name="user_id"
-          value={reservation.user_id}
-          onChange={handleChange}
-          className="border border-gray-300 rounded-lg p-2"
-          required
-        >
-          <option value="">Selecciona un usuario</option>
-          {users.map((user) => (
-            <option key={user.id} value={user.id}>
-              {user.username}
-            </option>
-          ))}
-        </select>
-      )}
-
 
       <label htmlFor="activity_id" className="text-gray-700 font-bold">
         Actividad
@@ -232,8 +227,9 @@ function ActivityReservationForm() {
         name="activity_id"
         value={reservation.activity_id}
         onChange={handleChange}
-        className="border border-gray-300 rounded-lg p-2"
+        className="border border-gray-300 rounded-lg p-2 bg-gray-100"
         required
+        disabled={!!activityIdFromQuery} // Deshabilitado si viene por la URL
       >
         <option value="">Selecciona una actividad</option>
         {activities.map((activity) => (
@@ -242,6 +238,7 @@ function ActivityReservationForm() {
           </option>
         ))}
       </select>
+
 
       <label htmlFor="initial_date" className="text-gray-700 font-bold">
         Fecha inicio

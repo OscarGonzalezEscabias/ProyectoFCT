@@ -12,7 +12,7 @@ function Buttons({id}: {id: string}) {
                 if (confirm("¿Estás seguro de que quieres eliminar esta reserva?")) {
                     const response = await axios.delete(`/api/flight-reservation/del/${id}`)
                     console.log(response)
-                    router.push("/home/flight-reservation")
+                    router.push("/home/admin/flight-reservation")
                 }
             }}>Eliminar</button>
         </div>
