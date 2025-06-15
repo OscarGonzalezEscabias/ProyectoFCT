@@ -498,7 +498,6 @@ function StepSummary({
     selectedActivities: Activity[];
     activitiesReservationData: Record<number, ActivityReservationData>;
 }) {
-    // Vuelo
     const flightTotal =
         (selectedOutboundFlight && outboundFlightReservation.seatId)
             ? selectedOutboundFlight.base_price *
@@ -511,7 +510,6 @@ function StepSummary({
             (getSeatModifier(returnFlightReservation.seatId, 'return'))
             : 0;
 
-    // Hotel
     const nights =
         (new Date(hotelReservation.checkOut).getTime() -
             new Date(hotelReservation.checkIn).getTime()) /
@@ -520,7 +518,6 @@ function StepSummary({
     const selectedRoom = hotelRooms.find(r => r.id === hotelReservation.roomId);
     const hotelTotal = selectedRoom && nights > 0 ? selectedRoom.price * nights : 0;
 
-    // Actividades
     const activitiesTotal = selectedActivities.reduce((sum, activity) => {
         const resData = activitiesReservationData[activity.id];
         if (!resData || !resData.initialDate) return sum;
@@ -532,7 +529,6 @@ function StepSummary({
 
     const total = flightTotal + returnFlightTotal + hotelTotal + activitiesTotal;
 
-    // Acceso a los asientos por id
     function getSeatModifier(seatId: number, direction: 'outbound' | 'return') {
         const seatList = direction === 'outbound' ? outboundSeats : returnSeats;
         const seat = seatList.find((s: any) => s.id === seatId);
@@ -543,7 +539,6 @@ function StepSummary({
         <div className="space-y-2 text-sm text-gray-800">
             <h2 className="text-xl font-bold mb-4">Resumen de tu viaje</h2>
 
-            {/* Vuelos */}
             <div>
                 <h3 className="text-lg font-semibold">Vuelo de ida</h3>
                 {selectedOutboundFlight ? (
@@ -570,7 +565,6 @@ function StepSummary({
                 )}
             </div>
 
-            {/* Hotel */}
             <div>
                 <h3 className="text-lg font-semibold">Hotel</h3>
                 {selectedHotel ? (
@@ -585,7 +579,6 @@ function StepSummary({
                 )}
             </div>
 
-            {/* Actividades */}
             <div>
                 <h3 className="text-lg font-semibold">Actividades</h3>
                 {selectedActivities.length > 0 ? (
@@ -607,7 +600,6 @@ function StepSummary({
 
             <hr className="my-2" />
 
-            {/* Total */}
             <p className="text-lg font-bold">Total estimado: {total.toFixed(2)}€</p>
         </div>
     );

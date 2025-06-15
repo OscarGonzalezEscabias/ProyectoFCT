@@ -1,8 +1,9 @@
+"use client"
 import LoginForm from "@/components/forms/LoginForm"
 
 function LoginPage() {
     return (
-        <div className="flex items-center justify-center h-full">
+        <div className="flex flex-1 justify-center items-center flex-col px-6 py-16">
             <LoginForm/>
         </div>
     )
